@@ -28,7 +28,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 
   await deleteNote({ id: params.noteId, userId });
 
-  return redirect("/notes");
+  return redirect("/home");
 };
 
 export default function NoteDetailsPage() {
@@ -42,7 +42,7 @@ export default function NoteDetailsPage() {
       <Form method="post">
         <button
           type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
+          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:bg-blue-400"
         >
           Delete
         </button>

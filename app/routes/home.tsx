@@ -65,7 +65,6 @@ export default function HomePage() {
       </header>
       {/**This is the main window for the notes future=>homepage */}
       <main className="flex h-full bg-white">
-        {/*
         <div className="h-full border-r w-80 bg-gray-50">
           <Link to="new" className="block p-4 text-xl text-blue-500">
             + New Note
@@ -91,7 +90,7 @@ export default function HomePage() {
               ))}
             </ol>
           )}
-                  </div> */}
+        </div>
 
         <div className="flex-1 p-6">
           <Outlet />
