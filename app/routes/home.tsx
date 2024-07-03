@@ -18,11 +18,18 @@ export default function NotesPage() {
 
   return (
     <div className="flex h-full min-h-screen flex-col">
+      {/**This is the navbar */}
       <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
-        <h1 className="text-3xl font-bold">
-          <Link to=".">Notes</Link>
+        <h1 className="text-2xl font-bold active:underline">
+          <Link to=".">Home</Link>
         </h1>
-        <p>{user.email}</p>
+        <h1 className="text-2xl font-bold">
+          <Link to="/library">Library</Link>
+        </h1>
+        <h1 className="text-2xl font-bold">
+          <Link to="/Community">Community</Link>
+        </h1>
+        {/*<p>{user.email}</p>*/}
         <Form action="/logout" method="post">
           <button
             type="submit"
@@ -32,7 +39,7 @@ export default function NotesPage() {
           </button>
         </Form>
       </header>
-
+      {/**This is the main window for the notes future=>homepage */}
       <main className="flex h-full bg-white">
         <div className="h-full w-80 border-r bg-gray-50">
           <Link to="new" className="block p-4 text-xl text-blue-500">
