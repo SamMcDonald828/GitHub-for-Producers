@@ -11,15 +11,15 @@ export default function Index() {
   return (
     <main className="">
       <WavyBackground className="max-w-4xl mx-auto pb-40">
-        <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
+        <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl mt-28">
           <span className="uppercase text-white drop-shadow-md">
             Producers Space
           </span>
         </h1>
-        <p className="text-2xl mt-6 md:text-4xl lg:text-7xl text-white font-normal inter-var text-center">
+        <p className="text-2xl mt-6 md:text-4xl text-white font-normal inter-var text-center">
           The GitHub for Music Producers
         </p>
-        <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
+        <div className="mx-auto mt-6 max-w-sm sm:flex sm:max-w-none sm:justify-center">
           {user ? (
             <Link
               to="/notes"
