@@ -33,7 +33,7 @@ export default function LibraryPage() {
             + New Note
           </Link>
         </div>
-        <div className="flex">
+        <div className="">
           <Card className="w-[350px]">
             <CardHeader>
               <CardTitle>Create project</CardTitle>
