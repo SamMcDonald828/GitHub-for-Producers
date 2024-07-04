@@ -24,6 +24,14 @@ async function seed() {
     },
   });
 
+  await prisma.project.create({
+    data: {
+      title: "My first project",
+      body: "Hello, world!",
+      userId: user.id,
+    },
+  });
+
   await prisma.note.create({
     data: {
       title: "My first note",
