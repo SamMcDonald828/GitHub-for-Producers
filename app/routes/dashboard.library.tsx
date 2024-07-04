@@ -30,7 +30,7 @@ export default function LibraryPage() {
       <main className="flex h-full bg-white">
         <div className="w-48 h-full border-r bg-gray-50">
           <Link to="new" className="block p-4 text-xl text-blue-500">
-            + New Note
+            + New Project
           </Link>
         </div>
         <div className="">
@@ -46,12 +46,16 @@ export default function LibraryPage() {
                 <div className="grid items-center w-full gap-4">
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="name">Name</Label>
-                    <Input id="name" placeholder="Name of your project" />
+                    <Input
+                      className="rounded"
+                      id="name"
+                      placeholder="Name of your project"
+                    />
                   </div>
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="framework">Framework</Label>
                     <Select>
-                      <SelectTrigger id="framework">
+                      <SelectTrigger id="framework" className="rounded">
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent position="popper">
@@ -66,7 +70,7 @@ export default function LibraryPage() {
               </form>
             </CardContent>
             <CardFooter className="flex justify-between">
-              <Button variant="outline">Cancel</Button>
+              <Button>Cancel</Button>
               <Button>Deploy</Button>
             </CardFooter>
           </Card>

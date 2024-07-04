@@ -8,7 +8,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({});
 };
 
-export default function LayoutIndexPage() {
+export default function DashboardIndexPage() {
   return (
     <>
       <HeaderGlobal />

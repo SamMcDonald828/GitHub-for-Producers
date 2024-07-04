@@ -11,22 +11,16 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({});
 };
 
-export default function Layout() {
+export default function Dashboard() {
   const data = useLoaderData<typeof loader>();
   const user = useUser();
 
   return (
-    <div className="flex flex-col h-full min-h-screen">
+    <div>
       {/**This is the navbar */}
       <HeaderGlobal />
       {/**This is the main window for the notes future=>homepage */}
-      <main className="flex h-full bg-white">
-        <div className="h-full border-r w-80 bg-gray-50"></div>
-
-        <div className="flex-1 p-6">
-          <Outlet />
-        </div>
-      </main>
+      <Outlet />
     </div>
   );
 }
