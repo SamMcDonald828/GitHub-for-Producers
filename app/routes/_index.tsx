@@ -22,10 +22,10 @@ export default function Index() {
         <div className="max-w-sm mx-auto mt-6 sm:flex sm:max-w-none sm:justify-center">
           {user ? (
             <Link
-              to="/home"
+              to="/dashboard"
               className="flex items-center justify-center px-4 py-3 text-base font-medium bg-white border border-transparent rounded-md shadow-sm text-slate-700 hover:bg-slate-300 sm:px-8"
             >
-              View Home for {user.email}
+              View Dashboard for {user.email}
             </Link>
           ) : (
             <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">

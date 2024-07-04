@@ -1,7 +1,5 @@
 import { Link } from "@remix-run/react";
 import { LoaderFunctionArgs, json } from "@remix-run/node";
-import { Outlet } from "@remix-run/react";
-import { HeaderGlobal } from "~/components/components/ui/HeaderGlobal";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

@@ -5,7 +5,7 @@ export function HeaderGlobal() {
     <header className="flex items-center justify-between p-4 text-white bg-slate-800">
       <h1 className="text-2xl font-bold active:underline">
         <NavLink
-          to="."
+          to="home"
           end
           className={({ isActive }) => (isActive ? "underline" : "opacity-60")}
         >
@@ -14,7 +14,7 @@ export function HeaderGlobal() {
       </h1>
       <h1 className="text-2xl font-bold">
         <NavLink
-          to="/library"
+          to="library"
           end
           className={({ isActive }) => (isActive ? "underline" : "opacity-60")}
         >
@@ -23,7 +23,7 @@ export function HeaderGlobal() {
       </h1>
       <h1 className="text-2xl font-bold">
         <NavLink
-          to="/community"
+          to="community"
           end
           className={({ isActive }) => (isActive ? "underline" : "opacity-60")}
         >
