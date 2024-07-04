@@ -22,7 +22,7 @@ export default function HomePage() {
       <header className="flex items-center justify-between p-4 text-white bg-slate-800">
         <h1 className="text-2xl font-bold active:underline">
           <NavLink
-            to="."
+            to="/layout"
             end
             className={({ isActive }) =>
               isActive ? "underline" : "opacity-60"
