@@ -6,7 +6,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
   return json({});
 };
-export default function HomeIndexPage() {
+export default function HomePage() {
   return (
     <p>
       No note selected. Select a note on the left, or{" "}
