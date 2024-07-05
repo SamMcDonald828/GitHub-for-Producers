@@ -13,13 +13,13 @@ import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
-  invariant(params.noteId, "noteId not found");
+  invariant(params.projectId, "noteId not found");
 
-  const note = await getProject({ id: params.projectId, userId });
-  if (!note) {
+  const project = await getProject({ id: params.projectId, userId });
+  if (!project) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json({ note });
+  return json({ project });
 };
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {

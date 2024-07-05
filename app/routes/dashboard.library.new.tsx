@@ -1,7 +1,18 @@
+import { Label } from "@radix-ui/react-label";
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import { useEffect, useRef } from "react";
+import { Button } from "~/components/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/components/ui/card";
+import { Input } from "~/components/components/ui/input";
 
 import { createProject } from "~/models/project.server";
 import { requireUserId } from "~/session.server";
@@ -27,9 +38,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     );
   }
 
-  const note = await createProject({ body, title, userId });
+  const project = await createProject({ body, title, userId });
 
-  return redirect(`/library/${project.id}`);
+  return redirect(`/dashboard/library/${project.id}`);
 };
 
 export default function NewProjectPage() {
@@ -46,64 +57,55 @@ export default function NewProjectPage() {
   }, [actionData]);
 
   return (
-    <Form
-      method="post"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 8,
-        width: "100%",
-      }}
-    >
-      <div>
-        <label className="flex w-full flex-col gap-1">
-          <span>Title: </span>
-          <input
-            ref={titleRef}
-            name="title"
-            className="flex-1 rounded-md border-2 border-blue-500 px-3 text-lg leading-loose"
-            aria-invalid={actionData?.errors?.title ? true : undefined}
-            aria-errormessage={
-              actionData?.errors?.title ? "title-error" : undefined
-            }
-          />
-        </label>
-        {actionData?.errors?.title ? (
-          <div className="pt-1 text-red-700" id="title-error">
-            {actionData.errors.title}
+    <Form method="post">
+      <Card className="w-[350px]">
+        <CardHeader>
+          <CardTitle>Create project</CardTitle>
+          <CardDescription>
+            Deploy your new project in one-click.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid items-center w-full gap-4">
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="name">Title</Label>
+              <Input
+                className="rounded"
+                id="title"
+                name="title"
+                placeholder="Name of your project"
+              />
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="body">Body</Label>
+              <Input
+                className="rounded"
+                id="body"
+                name="body"
+                placeholder="description of your project"
+              />
+            </div>
+            {/*  <div className="flex flex-col space-y-1.5">
+                    <Label htmlFor="framework">Framework</Label>
+                    <Select>
+                      <SelectTrigger id="framework" className="rounded">
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent position="popper">
+                        <SelectItem value="next">Next.js</SelectItem>
+                        <SelectItem value="sveltekit">SvelteKit</SelectItem>
+                        <SelectItem value="astro">Astro</SelectItem>
+                        <SelectItem value="nuxt">Nuxt.js</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                */}
           </div>
-        ) : null}
-      </div>
-
-      <div>
-        <label className="flex w-full flex-col gap-1">
-          <span>Body: </span>
-          <textarea
-            ref={bodyRef}
-            name="body"
-            rows={8}
-            className="w-full flex-1 rounded-md border-2 border-blue-500 px-3 py-2 text-lg leading-6"
-            aria-invalid={actionData?.errors?.body ? true : undefined}
-            aria-errormessage={
-              actionData?.errors?.body ? "body-error" : undefined
-            }
-          />
-        </label>
-        {actionData?.errors?.body ? (
-          <div className="pt-1 text-red-700" id="body-error">
-            {actionData.errors.body}
-          </div>
-        ) : null}
-      </div>
-
-      <div className="text-right">
-        <button
-          type="submit"
-          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
-        >
-          Save
-        </button>
-      </div>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Button type="submit">Create</Button>
+        </CardFooter>
+      </Card>
     </Form>
   );
 }

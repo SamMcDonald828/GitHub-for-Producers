@@ -40,10 +40,10 @@ model Note {
 }
 
 model Project {
-  id     String  @id @default(cuid())
-  title  String?
-  body   String?
-  status String?
+  id    String  @id @default(cuid())
+  title String?
+  body  String?
+  //status String? @default(cuid())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

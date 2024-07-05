@@ -19,7 +19,7 @@ export function getProject({
 export function getProjectListItems({ userId }: { userId: User["id"] }) {
   return prisma.project.findMany({
     where: { userId },
-    select: { id: true, title: true },
+    select: { id: true, title: true, body: true},
     orderBy: { updatedAt: "desc" },
   });
 }
@@ -44,7 +44,7 @@ export function createProject({
   });
 }
 
-export function deleteNote({
+export function deleteProject({
   id,
   userId,
 }: Pick<Project, "id"> & { userId: User["id"] }) {
