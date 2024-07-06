@@ -15,22 +15,35 @@ export default function LibraryPage() {
   return (
     <>
       <main className="flex h-full bg-white">
-        <div className="w-48 h-full border-r bg-gray-50">
-          <Link to="new" className="block p-4 text-xl text-blue-500">
-            <Button type="submit">+ New Project</Button>
+        <div className="h-full overflow-scroll border-r bg-gray-50 w-42">
+          <Link to="new" className="block p-4 text-xl text-black">
+            <Button
+              variant="outline"
+              type="submit"
+              className="shadow-xl size-sm"
+            >
+              + New Project
+            </Button>
           </Link>
-          {data.projectListItems.map((project) => (
-            <ol key={project.id}>
-              <li>
-                <NavLink to={`${project.id}`}>
-                  <h1>{project.title}</h1>
-                  <p>{project.body}</p>
+          <ol className="mx-4 text-slate-500">
+            {data.projectListItems.map((project) => (
+              <li key={project.id}>
+                <NavLink
+                  className={({ isActive }) =>
+                    `block p-2 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
+                  }
+                  to={project.id}
+                >
+                  {project.title}
+                  {/*<p>{project.body}</p>*/}
                 </NavLink>
               </li>
-            </ol>
-          ))}
+            ))}
+          </ol>
         </div>
-        <Outlet />
+        <div className="mx-4">
+          <Outlet />
+        </div>
       </main>
     </>
   );
