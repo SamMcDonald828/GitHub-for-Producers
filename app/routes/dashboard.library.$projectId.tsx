@@ -37,12 +37,11 @@ export default function ProjectDetailsPage() {
   return (
     <div>
       <h3 className="text-2xl font-bold">{data.project.title}</h3>
-      <p className="py-6">{data.project.body}</p>
-      <hr className="my-4" />
+      <p className="py-4">{data.project.body}</p>
       <Form method="post">
         <button
           type="submit"
-          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:bg-blue-400"
+          className="px-4 py-2 text-white rounded bg-slate-700 hover:bg-slate-400 focus:bg-blue-400"
         >
           Delete
         </button>

@@ -58,7 +58,7 @@ export default function NewProjectPage() {
 
   return (
     <Form method="post">
-      <Card className="w-[350px]">
+      <Card className="w-[310px]">
         <CardHeader>
           <CardTitle>Create project</CardTitle>
           <CardDescription>
