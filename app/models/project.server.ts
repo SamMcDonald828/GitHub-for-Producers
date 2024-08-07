@@ -1,4 +1,4 @@
-import type { User, UserProjects, Project } from "@prisma/client";
+import type { User, Project, Folder } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
@@ -27,6 +27,7 @@ export function getProjectListItems({ userId }: { userId: User["id"] }) {
 export function createProject({
   body,
   title,
+  folder,
   userId,
 }: Pick<Project, "body" | "title"> & {
   userId: User["id"];
@@ -35,6 +36,38 @@ export function createProject({
     data: {
       title,
       body,
+      folder: {
+        connect: {
+          id: folderId,
+        },
+      },
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
+    },
+  });
+}
+
+export function updateProject({
+  body,
+  title,
+  folder,
+  folderId,
+  userId,
+}: Pick<Project, "body" | "title"> & {
+  userId: User["id"];
+}) {
+  return prisma.project.create({
+    data: {
+      title,
+      body,
+      folder: {
+        connect: {
+          id: folderId,
+        },
+      },
       user: {
         connect: {
           id: userId,
