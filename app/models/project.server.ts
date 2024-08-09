@@ -52,12 +52,12 @@ export function createProject({
 export function updateProject({
   body,
   title,
-  folderId,
+  folder,
   userId,
 }: Pick<Project, "body" | "title"> & {
   userId: User["id"];
 }) {
-  return prisma.project.update({
+  return prisma.project.updateMany({
     data: {
       title,
       body,

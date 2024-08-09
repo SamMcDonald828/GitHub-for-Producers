@@ -14,10 +14,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  password     Password?
-  projects     Project[]
-  notes        Note[]
-  userprojects UserProjects[]
+  password Password?
+  projects Project[]
+  notes    Note[]
 }
 
 model Password {
@@ -52,12 +51,6 @@ model Project {
   userId String
 
   folders Folder[]
-}
-
-model UserProjects {
-  id     String @id @default(cuid())
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
 }
 
 model Folder {
