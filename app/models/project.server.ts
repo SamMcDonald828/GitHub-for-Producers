@@ -45,7 +45,7 @@ export function createProject({
         },
       },
       ...(folderId && {
-        folders: {  // Assuming a one-to-many relationship with folders
+        folders: {  // one-to-many relationship with folders
           connect: { id: folderId },
         },
       }),
@@ -64,13 +64,13 @@ export function updateProject({
   userId: User["id"];
   folderId?: Folder["id"];  // Optional parameter
 }) {
-  return prisma.project.update({
+  return prisma.project.updateMany({
     where: { id, userId },
     data: {
       title,
       body,
       ...(folderId && {
-        folders: {  // Assuming a one-to-many relationship with folders
+        folders: {  // one-to-many relationship with folders
           connect: { id: folderId },
         },
       }),
