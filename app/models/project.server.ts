@@ -37,8 +37,8 @@ export function createProject({
       body,
       folder: {
         connect: {
-          id: folderId,
-        },
+          id: folderId : createFolder,
+        }
       },
       user: {
         connect: {
@@ -57,7 +57,7 @@ export function updateProject({
 }: Pick<Project, "body" | "title"> & {
   userId: User["id"];
 }) {
-  return prisma.project.create({
+  return prisma.project.update({
     data: {
       title,
       body,

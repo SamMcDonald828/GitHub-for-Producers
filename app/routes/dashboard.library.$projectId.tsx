@@ -2,13 +2,18 @@ import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import {
   Form,
+  Outlet,
   isRouteErrorResponse,
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { deleteProject, getProject } from "~/models/project.server";
+import {
+  deleteProject,
+  getProject,
+  updateProject,
+} from "~/models/project.server";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -45,6 +50,7 @@ export default function ProjectDetailsPage() {
         >
           Delete
         </button>
+        <Outlet />
       </Form>
     </div>
   );
