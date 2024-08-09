@@ -30,10 +30,16 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 export const action = async ({ params, request }: ActionFunctionArgs) => {
   const userId = await requireUserId(request);
   invariant(params.projectId, "noteId not found");
+  const formData = await request.formData();
+  if (request.method === "delete") {
+    await deleteProject({ id: params.projectId, userId });
 
-  await deleteProject({ id: params.projectId, userId });
+    return redirect("/dashboard/library");
+  } else if (request.method === "put") {
+    await updateProject({ id: params.projectId, userId });
 
-  return redirect("/dashboard/library");
+    return redirect("/dashboard/library");
+  }
 };
 
 export default function ProjectDetailsPage() {
