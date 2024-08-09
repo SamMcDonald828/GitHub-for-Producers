@@ -16,7 +16,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
   invariant(params.projectId, "noteId not found");
 
-  const project = await getFolder({ id: params.folderId, userId });
+  const project = await getFolder({ id: params.folderId, projectId });
   if (!project) {
     throw new Response("Not Found", { status: 404 });
   }
