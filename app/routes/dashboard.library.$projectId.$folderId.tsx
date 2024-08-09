@@ -13,8 +13,8 @@ import { deleteFolder, getFolder, updateFolder } from "~/models/folder.server";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request);
-  invariant(params.projectId, "noteId not found");
+  const projectId = await requireUserId(request);
+  invariant(params.folderId, "noteId not found");
 
   const project = await getFolder({ id: params.folderId, projectId });
   if (!project) {
@@ -24,10 +24,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request);
+  const projectId = await requireUserId(request);
   invariant(params.folderId, "folderId not found");
 
-  await deleteFolder({ id: params.folderId, userId });
+  await deleteFolder({ id: params.folderId, projectId });
 
   return redirect("/dashboard/library");
 };

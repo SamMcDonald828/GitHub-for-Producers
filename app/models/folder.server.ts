@@ -1,4 +1,4 @@
-import type { User, Project, Folder } from "@prisma/client";
+import type { Project, Folder } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
@@ -7,7 +7,6 @@ export type { Folder } from "@prisma/client";
 export function getFolder({
   id,
   projectId,
-  userId,
 }: Pick<Folder, "id"> & {
   projectId: Project["id"];
 }) {
@@ -52,13 +51,13 @@ export function updateFolder({
 }: Pick<Folder, "body" | "title"> & {
   projectId: Project["id"];
 }) {
-  return prisma.folder.update({
+  return prisma.folder.updateMany({
     data: {
       title,
       body,
-      user: {
+      project: {
         connect: {
-          id: userId,
+          id: projectId,
         },
       },
     },
