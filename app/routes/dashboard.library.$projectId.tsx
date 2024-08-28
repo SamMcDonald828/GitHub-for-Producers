@@ -56,7 +56,7 @@ export default function ProjectDetailsPage() {
         >
           Delete
         </button>
-        <button type="submit" formMethod="put">
+        <button type="submit" formAction="put">
           Update
         </button>
         <Outlet />
