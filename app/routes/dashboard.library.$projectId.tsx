@@ -38,7 +38,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   } else if (request.method === "put") {
     await updateProject({ id: params.projectId, userId });
 
-    return redirect("/dashboard/library");
+    return redirect(`/dashboard/library/$projectId`);
   }
 };
 
@@ -55,6 +55,9 @@ export default function ProjectDetailsPage() {
           className="px-4 py-2 text-white rounded bg-slate-700 hover:bg-slate-400 focus:bg-blue-400"
         >
           Delete
+        </button>
+        <button type="submit" formMethod="put">
+          Update
         </button>
         <Outlet />
       </Form>
