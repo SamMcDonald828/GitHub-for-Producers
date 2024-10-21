@@ -1,4 +1,5 @@
 import { Label } from "@radix-ui/react-label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
@@ -61,9 +62,6 @@ export default function NewProjectPage() {
       <Card className="w-[310px]">
         <CardHeader>
           <CardTitle>Create project</CardTitle>
-          <CardDescription>
-            Deploy your new project in one-click.
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid items-center w-full gap-4">
@@ -85,21 +83,15 @@ export default function NewProjectPage() {
                 placeholder="description of your project"
               />
             </div>
-            {/*  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="framework">Framework</Label>
-                    <Select>
-                      <SelectTrigger id="framework" className="rounded">
-                        <SelectValue placeholder="Select" />
-                      </SelectTrigger>
-                      <SelectContent position="popper">
-                        <SelectItem value="next">Next.js</SelectItem>
-                        <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                        <SelectItem value="astro">Astro</SelectItem>
-                        <SelectItem value="nuxt">Nuxt.js</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                */}
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="mainfolder">Main folder</Label>
+              <Input
+                className="rounded"
+                id="mainfolder"
+                name="mainfolder"
+                placeholder='This is your "main branch" for your production you can name it here'
+              />
+            </div>
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
