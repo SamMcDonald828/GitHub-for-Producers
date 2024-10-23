@@ -46,10 +46,10 @@ export default function ProjectDetailsPage() {
               type="submit"
               className="shadow-xl size-sm"
             >
-              + New Folder
+              + New Project
             </Button>
           </Link>
-      {/* <ol className="mx-4 text-slate-500">
+      <ol className="mx-4 text-slate-500">
             {data.folderListItems.map((folder) => (
               <li key={folder.id}>
                 <NavLink
@@ -59,11 +59,11 @@ export default function ProjectDetailsPage() {
                   to={folder.id}
                 >
                   {folder.title}
-                  {/*<p>{project.body}</p>*
+                  {/*<p>{project.body}</p>*/}
                 </NavLink>
               </li>
             ))}
-          </ol> */}
+          </ol>
       <Form method="post">
         <button
           type="submit"
