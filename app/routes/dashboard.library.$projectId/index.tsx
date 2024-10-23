@@ -4,12 +4,14 @@ import {
   Form,
   isRouteErrorResponse,
   Link,
+  NavLink,
   Outlet,
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { Button } from "~/components/components/ui/button";
+import { getFolderListItems } from "~/models/folder.server";
 
 import { deleteProject, getProject } from "~/models/project.server";
 import { requireUserId } from "~/session.server";
@@ -22,7 +24,8 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   if (!project) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json({ project });
+  const folderListItems = await getFolderListItems({ projectId: params.projectId });
+  return json({ project, folderListItems });
 };
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {

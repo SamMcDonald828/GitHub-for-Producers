@@ -10,30 +10,28 @@ export function getFolder({
     projectId: Project["id"];
 }) {
     return prisma.folder.findFirst({
-        select: { id: true, body: true, title: true },
+        select: { id: true, title: true },
         where: { id, projectId }
     });
 }
 
-export function getFolderFiles({ projectId }: { projectId: Project["id"] }) {
+export function getFolderListItems({ projectId }: { projectId: Project["id"] }) {
     return prisma.folder.findMany({
         where: { projectId },
-        select: { id: true, title: true, body: true},
+        select: { id: true, title: true },
         orderBy: { updatedAt: "desc" },
     });
 }
 
 export function createFolder({
-    body,
     title,
     projectId,
-}: Pick<Folder, "body" | "title"> & {
+}: Pick<Folder, "title"> & {
     projectId: Project["id"];
 }) {
     return prisma.folder.create({
         data: {
             title,
-            body,
             project: {
                 connect: {
                     id: projectId,

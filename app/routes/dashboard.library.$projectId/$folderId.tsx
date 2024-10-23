@@ -10,16 +10,13 @@ import {
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { Button } from "~/components/components/ui/button";
-
-import { deleteProject, getProject } from "~/models/project.server";
-import { getFolder, deleteFolder, createFolder, getFolderFiles } from "~/models/folder.server";
+import { getFolder, deleteFolder, createFolder, getFolderListItems } from "~/models/folder.server";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     const userId = await requireUserId(request);
-    const projectId = await getProject({ id: params.projectId, userId });
 
-    const folder = await getFolderFiles({ id: params.folderId, projectId});
+    const folder = await getFolder({ id: params.folderId, projectId: params.projectId });
     if (!folder) {
         throw new Response("Not Found", { status: 404 });
     }
@@ -27,12 +24,12 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 }
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
-    const userId = await requireUserId(request);
+    const projectId = await requireUserId(request);
     invariant(params.projectId, "folderId not found");
 
-    await deleteFolder({ id: params.folderId, projectId })
+    await deleteFolder({ id: params.folderId, projectId: params.projectId })
 
-    return redirect("/dashboard/library");
+    return redirect(`/dashboard/library/${params.projectId}`);
 }
 
 export default function FolderDetailsPage() {
@@ -45,6 +42,7 @@ export default function FolderDetailsPage() {
             <input type="file">Upload a file/files</input>
             <button type="submit">save</button>
         </Form>
+        <ol>
         {data.folderFiles.map((file) => (
             <li key={file.id}>
                 <NavLink
@@ -62,6 +60,7 @@ export default function FolderDetailsPage() {
                 </NavLink>
             </li>
         ))}
+        </ol>
        </div> 
 
     );
