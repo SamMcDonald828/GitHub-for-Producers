@@ -2,7 +2,7 @@ import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
 import { Button } from "~/components/components/ui/button";
-import ProjectDetailsPage from "./dashboard.library.$projectId";
+import ProjectDetailsPage from "../dashboard.library.$projectId";
 import { getProjectListItems } from "~/models/project.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -14,7 +14,7 @@ export default function LibraryPage() {
   const data = useLoaderData<typeof loader>();
   return (
     <>
-      <main className="flex h-full bg-white">
+      <main className="flex bg-white">
         <div className="h-full overflow-scroll border-r bg-gray-50 w-42">
           <Link to="new" className="block p-4 text-xl text-black">
             <Button

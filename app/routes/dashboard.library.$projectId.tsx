@@ -3,10 +3,12 @@ import { json, redirect } from "@remix-run/node";
 import {
   Form,
   isRouteErrorResponse,
+  Link,
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
+import { Button } from "~/components/components/ui/button";
 
 import { deleteProject, getProject } from "~/models/project.server";
 import { requireUserId } from "~/session.server";
@@ -38,6 +40,30 @@ export default function ProjectDetailsPage() {
     <div>
       <h3 className="text-2xl font-bold">{data.project.title}</h3>
       <p className="py-4">{data.project.body}</p>
+      <Link to="new" className="block p-4 text-xl text-black">
+            <Button
+              variant="outline"
+              type="submit"
+              className="shadow-xl size-sm"
+            >
+              + New Folder
+            </Button>
+          </Link>
+      {/* <ol className="mx-4 text-slate-500">
+            {data.folderListItems.map((folder) => (
+              <li key={folder.id}>
+                <NavLink
+                  className={({ isActive }) =>
+                    `block p-2 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
+                  }
+                  to={folder.id}
+                >
+                  {folder.title}
+                  {/*<p>{project.body}</p>*
+                </NavLink>
+              </li>
+            ))}
+          </ol> */}
       <Form method="post">
         <button
           type="submit"
