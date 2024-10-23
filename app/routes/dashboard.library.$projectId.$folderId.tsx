@@ -12,13 +12,14 @@ import invariant from "tiny-invariant";
 import { Button } from "~/components/components/ui/button";
 
 import { deleteProject, getProject } from "~/models/project.server";
+import { getFolder, deleteFolder, createFolder, getFolderFiles } from "~/models/folder.server";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     const userId = await requireUserId(request);
     const projectId = await getProject({ id: params.projectId, userId });
 
-    const folder = await getFolder({ id: params.folderId, projectId});
+    const folder = await getFolderFiles({ id: params.folderId, projectId});
     if (!folder) {
         throw new Response("Not Found", { status: 404 });
     }

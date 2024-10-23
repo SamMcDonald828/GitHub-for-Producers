@@ -14,3 +14,41 @@ export function getFolder({
         where: { id, projectId }
     });
 }
+
+export function getFolderFiles({ projectId }: { projectId: Project["id"] }) {
+    return prisma.folder.findMany({
+        where: { projectId },
+        select: { id: true, title: true, body: true},
+        orderBy: { updatedAt: "desc" },
+    });
+}
+
+export function createFolder({
+    body,
+    title,
+    projectId,
+}: Pick<Folder, "body" | "title"> & {
+    projectId: Project["id"];
+}) {
+    return prisma.folder.create({
+        data: {
+            title,
+            body,
+            project: {
+                connect: {
+                    id: projectId,
+                },
+            },
+        },
+    });
+
+}
+
+export function deleteFolder({
+    id,
+    projectId,
+}: Pick<Folder, "id"> & { projectId: Project["id"]}) {
+    return prisma.folder.deleteMany({
+        where: { id, projectId },
+    })
+}
