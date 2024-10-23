@@ -57,6 +57,7 @@ export default function FolderDetailsPage() {
                   {/*<p>{file.comments}</p>*/}
                   {/*Audio file display would go here later*/}
                   {/*Delete/upload replacement/merge*/}
+                  {/*Or Entire File Component <AudioFile /> will be imported here*/}
                 </NavLink>
             </li>
         ))}
