@@ -4,6 +4,7 @@ import {
   Form,
   isRouteErrorResponse,
   Link,
+  Outlet,
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
@@ -46,7 +47,7 @@ export default function ProjectDetailsPage() {
               type="submit"
               className="shadow-xl size-sm"
             >
-              + New Project
+              + New Folder
             </Button>
           </Link>
       <ol className="mx-4 text-slate-500">
@@ -72,6 +73,7 @@ export default function ProjectDetailsPage() {
           Delete
         </button>
       </Form>
+      <Outlet />
     </div>
   );
 }
