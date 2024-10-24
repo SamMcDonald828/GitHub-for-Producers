@@ -2,7 +2,6 @@ import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import { requireUserId } from "~/session.server";
 import { Button } from "~/components/components/ui/button";
-import ProjectDetailsPage from "../dashboard.library.$projectId/";
 import { getProjectListItems } from "~/models/project.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -32,7 +31,7 @@ export default function LibraryPage() {
                   className={({ isActive }) =>
                     `block p-2 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
                   }
-                  to={project.id}
+                  to={`/project/${project.id}`}
                 >
                   {project.title}
                   {/*<p>{project.body}</p>*/}

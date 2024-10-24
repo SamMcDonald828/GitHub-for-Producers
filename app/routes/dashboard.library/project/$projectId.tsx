@@ -44,7 +44,7 @@ export default function ProjectDetailsPage() {
     <div>
       <h3 className="text-2xl font-bold">{data.project.title}</h3>
       <p className="py-4">{data.project.body}</p>
-      <Link to="new" className="block p-4 text-xl text-black">
+      <Link to={`${data.project.id}/folder/new`} className="block p-4 text-xl text-black">
             <Button
               variant="outline"
               type="submit"
@@ -60,7 +60,7 @@ export default function ProjectDetailsPage() {
                   className={({ isActive }) =>
                     `block p-2 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
                   }
-                  to={folder.id}
+                  to={`folder/${folder.id}`}
                 >
                   {folder.title}
                   {/*<p>{project.body}</p>*/}
