@@ -6,7 +6,7 @@ import invariant from "tiny-invariant";
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
   // Extract projectId from params (not from the user session)
-
+  const projectId = await requireUserId(request);
   const formData = await request.formData();
   const title = formData.get("title");
 
@@ -14,7 +14,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     throw new Response("Invalid title", { status: 400 });
   }
   // Create a new folder for the specified projectId
-  const folder = await createFolder({ title, projectId: params.projectId });
+  const folder = await createFolder({ title, projectId });
 
   // Redirect to the created folder's page
   return redirect(`/dashboard/library/${params.projectId}`);
