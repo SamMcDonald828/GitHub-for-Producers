@@ -6,7 +6,6 @@ import invariant from "tiny-invariant";
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
     // Extract projectId from params (not from the user session)
-    invariant(params.projectId, "projectId not found");
   
     const formData = await request.formData();
     const title = formData.get("title");
@@ -18,10 +17,12 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     const folder = await createFolder({ title, projectId: params.projectId });
   
     // Redirect to the created folder's page
-    return redirect(`/dashboard/library/${params.projectId}/${folder.id}`);
+    return redirect(`/dashboard/library/${params.projectId}`);
   };
 
 export default function NewFolderPage() {
+  console.log("new folder page rendered");
+  const actionData = useActionData<typeof action>();
   return (
     <div>
       <h3 className="text-xl font-bold">Create a New Folder</h3>

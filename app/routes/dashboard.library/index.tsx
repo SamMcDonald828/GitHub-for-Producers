@@ -31,7 +31,7 @@ export default function LibraryPage() {
                   className={({ isActive }) =>
                     `block p-2 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
                   }
-                  to={`/project/${project.id}`}
+                  to={project.id}
                 >
                   {project.title}
                   {/*<p>{project.body}</p>*/}

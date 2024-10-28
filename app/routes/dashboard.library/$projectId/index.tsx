@@ -11,31 +11,37 @@ import {
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { Button } from "~/components/components/ui/button";
-import { getFolderListItems } from "~/models/folder.server";
-
+import { getFolder, getFolderListItems } from "~/models/folder.server";
 import { deleteProject, getProject } from "~/models/project.server";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
-  invariant(params.projectId, "noteId not found");
+  
+  // Ensure that projectId and folderId are both defined
+  invariant(params.projectId, "projectId not found");
 
   const project = await getProject({ id: params.projectId, userId });
   if (!project) {
     throw new Response("Not Found", { status: 404 });
   }
-  const folderListItems = await getFolderListItems({ projectId: params.projectId });
-  return json({ project, folderListItems });
+
+  // Now params.folderId is guaranteed to be a string
+  const folderListItems = await getFolderListItems({ id: params.folderId, projectId: params.projectId });
+
+  return json({ project, folderListItems});
 };
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
   const userId = await requireUserId(request);
   invariant(params.projectId, "noteId not found");
 
+
   await deleteProject({ id: params.projectId, userId });
 
   return redirect("/dashboard/library");
 };
+
 
 export default function ProjectDetailsPage() {
   const data = useLoaderData<typeof loader>();
@@ -44,7 +50,7 @@ export default function ProjectDetailsPage() {
     <div>
       <h3 className="text-2xl font-bold">{data.project.title}</h3>
       <p className="py-4">{data.project.body}</p>
-      <Link to={`${data.project.id}/folder/new`} className="block p-4 text-xl text-black">
+      <Link to="new" className="block p-4 text-xl text-black">
             <Button
               variant="outline"
               type="submit"
@@ -60,7 +66,7 @@ export default function ProjectDetailsPage() {
                   className={({ isActive }) =>
                     `block p-2 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
                   }
-                  to={`folder/${folder.id}`}
+                  to={`${folder.id}`}
                 >
                   {folder.title}
                   {/*<p>{project.body}</p>*/}
