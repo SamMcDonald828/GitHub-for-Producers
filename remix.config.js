@@ -8,6 +8,7 @@ module.exports = {
   tailwind: true,
   postcss: true,
   routes: async (defineRoutes) => {
+    // Let `flatRoutes` handle all routes within the `routes` folder
     return flatRoutes("routes", defineRoutes);
   },
 };

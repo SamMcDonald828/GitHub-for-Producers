@@ -20,7 +20,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
   // Ensure that projectId and folderId are both defined
   invariant(params.projectId, "projectId not found");
-  invariant(params.folderId, "folderId not found");
 
   const project = await getProject({ id: params.projectId, userId });
   if (!project) {
@@ -51,8 +50,8 @@ export default function ProjectDetailsPage() {
     <div>
       <h3 className="text-2xl font-bold">{data.project.title}</h3>
       <p className="py-4">{data.project.body}</p>
-      <Link to="new" className="block p-4 text-xl text-black">
-        <Button variant="outline" type="submit" className="shadow-xl size-sm">
+      <Link to="newFolder" className="block p-4 text-xl text-black">
+        <Button variant="outline" className="shadow-xl size-sm">
           + New Folder
         </Button>
       </Link>
