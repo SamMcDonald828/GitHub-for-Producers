@@ -36,11 +36,14 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
   const userId = await requireUserId(request);
+  let formData = await request.formData();
+  let { _action } = Object.fromEntries(formData);
+
   invariant(params.projectId, "noteId not found");
-  const action = "UPDATE";
-  if (action === "UPDATE") {
+
+  if (_action === "update") {
     await updateProject({ id: params.projectId, userId });
-  } else {
+  } else if (_action === "delete") {
     await deleteProject({ id: params.projectId, userId });
   }
 
@@ -77,15 +80,18 @@ export default function ProjectDetailsPage() {
       <Form method="post">
         <button
           type="submit"
+          name="_action"
+          value="delete"
           className="px-4 py-2 text-white rounded bg-slate-700 hover:bg-slate-400 focus:bg-blue-400"
         >
           Delete
         </button>
       </Form>
       <Form method="post">
-        <input type="hidden" name="_action" value="UPDATE" />
         <button
           type="submit"
+          name="_action"
+          value="update"
           className="px-4 py-2 text-white rounded bg-slate-700 hover:bg-slate-400 focus:bg-blue-400"
         >
           Update
