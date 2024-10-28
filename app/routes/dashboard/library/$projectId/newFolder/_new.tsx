@@ -28,7 +28,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   });
 
   // Redirect to the created folder's page
-  return redirect(`/dashboard/library/${params.folderId}`);
+  return redirect(`/dashboard/library/${projectId}/${folder.id}`);
 };
 
 export const loader = async () => {
@@ -39,12 +39,6 @@ export default function NewFolderPage() {
   console.log("new folder page rendered");
   const actionData = useActionData<typeof action>();
   const titleRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (actionData?.errors?.title) {
-      titleRef.current?.focus();
-    }
-  }, [actionData]);
 
   return (
     <div>
