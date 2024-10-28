@@ -50,25 +50,29 @@ export default function FolderDetailsPage() {
         <input type="file" />
         <button type="submit">save</button>
       </Form>
-      <ol>
-        {data.folder.files.map((file) => (
-          <li key={file.id}>
-            <NavLink
-              className={({ isActive }) =>
-                `block p-2 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
-              }
-              to={file.id}
-            >
-              {file.title}
-              {/*<p>{file.body}</p>*/}
-              {/*<p>{file.comments}</p>*/}
-              {/*Audio file display would go here later*/}
-              {/*Delete/upload replacement/merge*/}
-              {/*Or Entire File Component <AudioFile /> will be imported here*/}
-            </NavLink>
-          </li>
-        ))}
-      </ol>
+      {data.folder.files.length > 0 ? (
+        <ol>
+          {data.folder.files.map((file) => (
+            <li key={file.id}>
+              <NavLink
+                className={({ isActive }) =>
+                  `block p-2 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
+                }
+                to={file.id}
+              >
+                {file.title}
+                {/*<p>{file.body}</p>*/}
+                {/*<p>{file.comments}</p>*/}
+                {/*Audio file display would go here later*/}
+                {/*Delete/upload replacement/merge*/}
+                {/*Or Entire File Component <AudioFile /> will be imported here*/}
+              </NavLink>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p>No files in this folder</p>
+      )}
     </div>
   );
 }

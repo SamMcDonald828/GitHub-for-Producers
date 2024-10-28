@@ -12,13 +12,16 @@ import {
 import invariant from "tiny-invariant";
 import { Button } from "~/components/components/ui/button";
 import { getFolderList } from "~/models/folder.server";
-import { deleteProject, getProject } from "~/models/project.server";
+import {
+  deleteProject,
+  getProject,
+  updateProject,
+} from "~/models/project.server";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
 
-  // Ensure that projectId and folderId are both defined
   invariant(params.projectId, "projectId not found");
 
   const project = await getProject({ id: params.projectId, userId });
@@ -26,7 +29,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     throw new Response("Not Found", { status: 404 });
   }
 
-  // Now params.folderId is guaranteed to be a string
   const folderList = await getFolderList({
     projectId: params.projectId,
   });
@@ -37,12 +39,17 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 export const action = async ({ params, request }: ActionFunctionArgs) => {
   const userId = await requireUserId(request);
   let formData = await request.formData();
-  let { _action } = Object.fromEntries(formData);
+  let { _action, title, body } = Object.fromEntries(formData);
 
-  invariant(params.projectId, "noteId not found");
+  invariant(params.projectId, "projectId not found");
 
   if (_action === "update") {
-    await updateProject({ id: params.projectId, userId });
+    await updateProject({
+      id: params.projectId,
+      userId,
+      title: title?.toString() || "", // Ensure title and body are strings
+      body: body?.toString() || "",
+    });
   } else if (_action === "delete") {
     await deleteProject({ id: params.projectId, userId });
   }
@@ -55,8 +62,42 @@ export default function ProjectDetailsPage() {
 
   return (
     <div>
-      <h3 className="text-2xl font-bold">{data.project.title}</h3>
-      <p className="py-4">{data.project.body}</p>
+      <Form method="post">
+        <div className="py-4">
+          <input
+            type="text"
+            name="title"
+            defaultValue={data.project.title || ""}
+            className="border p-2 rounded w-full"
+          />
+        </div>
+        <div className="py-4">
+          <textarea
+            name="body"
+            defaultValue={data.project.body || ""}
+            className="border p-2 rounded w-full"
+          />
+        </div>
+        <button
+          type="submit"
+          name="_action"
+          value="update"
+          className="px-4 py-2 text-white rounded bg-blue-700 hover:bg-blue-400 focus:bg-blue-400"
+        >
+          Update Project
+        </button>
+      </Form>
+      <Form method="post">
+        <button
+          type="submit"
+          name="_action"
+          value="delete"
+          className="px-4 py-2 text-white rounded bg-red-700 hover:bg-red-400 focus:bg-red-400"
+        >
+          Delete Project
+        </button>
+      </Form>
+
       <Link to="newFolder" className="block p-4 text-xl text-black">
         <Button variant="outline" className="shadow-xl size-sm">
           + New Folder
@@ -72,32 +113,10 @@ export default function ProjectDetailsPage() {
               to={`${folder.id}`}
             >
               {folder.title}
-              {/*<p>{project.body}</p>*/}
             </NavLink>
           </li>
         ))}
       </ol>
-      <Form method="post">
-        <button
-          type="submit"
-          name="_action"
-          value="delete"
-          className="px-4 py-2 text-white rounded bg-slate-700 hover:bg-slate-400 focus:bg-blue-400"
-        >
-          Delete
-        </button>
-      </Form>
-      <Form method="post">
-        <button
-          type="submit"
-          name="_action"
-          value="update"
-          className="px-4 py-2 text-white rounded bg-slate-700 hover:bg-slate-400 focus:bg-blue-400"
-        >
-          Update
-        </button>
-      </Form>
-
       <Outlet />
     </div>
   );
