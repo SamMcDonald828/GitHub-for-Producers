@@ -36,8 +36,6 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   invariant(params.folderId, "folderId not found");
   invariant(params.projectId, "projectId not found");
 
-  await deleteFolder({ id: params.folderId, projectId: params.projectId });
-
   return redirect(`/dashboard/library/${params.projectId}`);
 };
 
@@ -52,7 +50,7 @@ export default function FolderDetailsPage() {
         <input type="file" />
         <button type="submit">save</button>
       </Form>
-      {/* <ol>
+      <ol>
         {data.folder.files.map((file) => (
           <li key={file.id}>
             <NavLink
@@ -63,14 +61,14 @@ export default function FolderDetailsPage() {
             >
               {file.title}
               {/*<p>{file.body}</p>*/}
-      {/*<p>{file.comments}</p>*/}
-      {/*Audio file display would go here later*/}
-      {/*Delete/upload replacement/merge*/}
-      {/*Or Entire File Component <AudioFile /> will be imported here*
+              {/*<p>{file.comments}</p>*/}
+              {/*Audio file display would go here later*/}
+              {/*Delete/upload replacement/merge*/}
+              {/*Or Entire File Component <AudioFile /> will be imported here*/}
             </NavLink>
           </li>
         ))}
-      </ol> */}
+      </ol>
     </div>
   );
 }

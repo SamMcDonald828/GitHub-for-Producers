@@ -28,7 +28,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   });
 
   // Redirect to the created folder's page
-  return redirect(`/dashboard/library/${projectId}/${folder.id}`);
+  return redirect(`/dashboard/library/${params.projectId}/${folder.id}`);
 };
 
 export const loader = async () => {

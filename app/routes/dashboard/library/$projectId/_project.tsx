@@ -37,8 +37,12 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 export const action = async ({ params, request }: ActionFunctionArgs) => {
   const userId = await requireUserId(request);
   invariant(params.projectId, "noteId not found");
-
-  await deleteProject({ id: params.projectId, userId });
+  const action = "UPDATE";
+  if (action === "UPDATE") {
+    await updateProject({ id: params.projectId, userId });
+  } else {
+    await deleteProject({ id: params.projectId, userId });
+  }
 
   return redirect("/dashboard/library");
 };
@@ -78,6 +82,16 @@ export default function ProjectDetailsPage() {
           Delete
         </button>
       </Form>
+      <Form method="post">
+        <input type="hidden" name="_action" value="UPDATE" />
+        <button
+          type="submit"
+          className="px-4 py-2 text-white rounded bg-slate-700 hover:bg-slate-400 focus:bg-blue-400"
+        >
+          Update
+        </button>
+      </Form>
+
       <Outlet />
     </div>
   );
