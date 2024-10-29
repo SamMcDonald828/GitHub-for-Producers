@@ -9,10 +9,15 @@ import {
   useRouteError,
   Outlet,
 } from "@remix-run/react";
+import {
+  unstable_parseMultipartFormData,
+} from '@remix-run/node';
 import invariant from "tiny-invariant";
 import { Button } from "~/components/components/ui/button";
 import { getFolder, deleteFolder } from "~/models/folder.server";
 import { requireUserId } from "~/session.server";
+import { s3UploadHandler, uploadStreamToS3 } from "~/utils/s3.server";
+import { k } from "vite/dist/node/types.d-aGj9QkWt";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
@@ -33,6 +38,20 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 export const action = async ({ params, request }: ActionFunctionArgs) => {
   await requireUserId(request);
 
+  // const file = await createFile();
+  // const folder = await getFolder();
+  // const key = file.id;
+  // const bucket = folder.id;
+  const key = '123';
+  const bucket = 'spring-tree-3095';
+
+  const formData = await unstable_parseMultipartFormData(
+    request,
+    (args) => s3UploadHandler({ key, bucket, ...args })
+  );
+  const fileKey = formData.get("file");
+  // const fileUrl = `https://spring-tree-3095.fly.storage.tigris.dev/${fileBucket}/${fileKey}`;
+
   invariant(params.folderId, "folderId not found");
   invariant(params.projectId, "projectId not found");
 
@@ -45,34 +64,11 @@ export default function FolderDetailsPage() {
   return (
     <div>
       <h3>{data.folder.title}</h3>
-      <Form method="post">
+      <Form method="post" encType="multipart/form-data">
         Upload a file
-        <input type="file" />
+        <input name="file" type="file" accept="audio/*" />
         <button type="submit">save</button>
       </Form>
-      {data.folder.files.length > 0 ? (
-        <ol>
-          {data.folder.files.map((file) => (
-            <li key={file.id}>
-              <NavLink
-                className={({ isActive }) =>
-                  `block p-2 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
-                }
-                to={file.id}
-              >
-                {file.title}
-                {/*<p>{file.body}</p>*/}
-                {/*<p>{file.comments}</p>*/}
-                {/*Audio file display would go here later*/}
-                {/*Delete/upload replacement/merge*/}
-                {/*Or Entire File Component <AudioFile /> will be imported here*/}
-              </NavLink>
-            </li>
-          ))}
-        </ol>
-      ) : (
-        <p>No files in this folder</p>
-      )}
     </div>
   );
 }
