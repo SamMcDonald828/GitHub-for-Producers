@@ -31,7 +31,7 @@
     "/postgres-data"
   ],
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.679.0",
+    "@aws-sdk/client-s3": "^3.682.0",
     "@aws-sdk/lib-storage": "^3.679.0",
     "@isaacs/express-prometheus-middleware": "^1.2.1",
     "@prisma/client": "^5.21.1",
