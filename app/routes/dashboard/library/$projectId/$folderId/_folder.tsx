@@ -38,8 +38,8 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   await requireUserId(request);
 
   const file = await createFile({
-    id: params.fileId as string,
-    folderId: params.folderId as string,
+    id: params.fileId || " ",
+    folderId: params.folderId || "",
     title: "", // Add a default value for title
     remoteUrl: "", // Add a default value for remoteUrl
   });
