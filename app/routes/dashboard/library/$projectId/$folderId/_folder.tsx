@@ -1,4 +1,8 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  UploadHandler,
+} from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import {
   Form,
@@ -17,6 +21,7 @@ import { requireUserId } from "~/session.server";
 import { s3UploadHandler, uploadStreamToS3 } from "~/utils/s3.server";
 import { k } from "vite/dist/node/types.d-aGj9QkWt";
 import { createFile } from "~/models/file.server";
+import { prisma } from "~/db.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
@@ -44,18 +49,31 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     remoteUrl: "", // Add a default value for remoteUrl
   });
   // const folder = await getFolder();
-  const key = file.id;
-  const bucket = params.folderId;
   // const key = "123";
-  // const bucket = "spring-tree-3095";
 
-  const formData = await unstable_parseMultipartFormData(request, (args) =>
-    s3UploadHandler({ key, bucket, ...args }),
+  const s3UploadHandler: UploadHandler = async ({ filename, data }) => {
+    const key = file.id;
+    const bucket = "spring-tree-3095";
+    // const bucket = params.folderId;
+
+    const fileKey = await uploadStreamToS3(data, filename!, key, bucket);
+    return fileKey;
+  };
+
+  const formData = await unstable_parseMultipartFormData(
+    request,
+    s3UploadHandler,
   );
 
   const fileKey = formData.get("file");
-  const fileName = formData.get("filename");
-  const fileBucket = formData.get("bucket");
+  //const fileName = formData.get("filename");
+  // const updatedFile = await prisma.file.update({
+  //   where: { id: file.id, folderId: params.folderId },
+  //   data: {
+  //     title: fileName as string,
+  //     remoteUrl: `https://spring-tree-3095.fly.storage.tigris.dev/${params.folderId}/${file.id}`,
+  //   },
+  // });
   // const fileUrl = `https://spring-tree-3095.fly.storage.tigris.dev/${fileBucket}/${fileKey}`;
 
   invariant(params.folderId, "folderId not found");
