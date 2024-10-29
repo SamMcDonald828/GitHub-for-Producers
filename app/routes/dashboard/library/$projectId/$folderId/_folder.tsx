@@ -44,16 +44,18 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     remoteUrl: "", // Add a default value for remoteUrl
   });
   // const folder = await getFolder();
-  // const key = file.id;
-  // const bucket = folder.id;
-  const key = "123";
-  const bucket = "spring-tree-3095";
+  const key = file.id;
+  const bucket = params.folderId;
+  // const key = "123";
+  // const bucket = "spring-tree-3095";
 
   const formData = await unstable_parseMultipartFormData(request, (args) =>
     s3UploadHandler({ key, bucket, ...args }),
   );
+
   const fileKey = formData.get("file");
   const fileName = formData.get("filename");
+  const fileBucket = formData.get("bucket");
   // const fileUrl = `https://spring-tree-3095.fly.storage.tigris.dev/${fileBucket}/${fileKey}`;
 
   invariant(params.folderId, "folderId not found");
@@ -71,6 +73,7 @@ export default function FolderDetailsPage() {
       <Form method="post" encType="multipart/form-data">
         Upload a file
         <input name="file" type="file" accept="audio/*" />
+        <input name="filename" type="text" placeholder="File Name" />
         <button type="submit">save</button>
       </Form>
     </div>
