@@ -75,6 +75,7 @@ export async function createBucket(id: string) {
   // make a directory
   const command = new CreateBucketCommand({
     Bucket: id,
+    ACL: "public-read",
   });
   const response = await s3.send(command);
   return response;
