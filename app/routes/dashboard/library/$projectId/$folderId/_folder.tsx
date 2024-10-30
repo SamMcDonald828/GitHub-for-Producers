@@ -19,14 +19,12 @@ import { Button } from "~/components/components/ui/button";
 import { getFolder, deleteFolder, listBucket } from "~/models/folder.server";
 import { requireUserId } from "~/session.server";
 import { s3UploadHandler, uploadStreamToS3 } from "~/utils/s3.server";
-import { k } from "vite/dist/node/types.d-aGj9QkWt";
 import {
   createFile,
   getFile,
   getFileList,
   updatedFile,
 } from "~/models/file.server";
-import { prisma } from "~/db.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
@@ -84,7 +82,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 
   // Update file name after upload started
   const fileKey = fileData.get("file");
-  const fileUrl = `https://fly.storage.tigris.dev/${data.folder.id}/${file.id}`;
+  const fileUrl = `https://fly.storage.tigris.dev/${folder?.id}/${file.id}`;
 
   await updatedFile({
     id: file.id,
