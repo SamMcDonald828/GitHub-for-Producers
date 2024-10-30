@@ -99,7 +99,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   invariant(params.folderId, "folderId not found");
   invariant(params.projectId, "projectId not found");
 
-  return redirect(`/dashboard/library/${params.projectId}`);
+  return redirect(`/dashboard/library/${params.projectId}/${params.folderId}`);
 };
 
 export default function FolderDetailsPage() {
