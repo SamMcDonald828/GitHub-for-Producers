@@ -86,13 +86,20 @@ export default function FolderDetailsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div>
+    <div className="flex flex-col">
       <h3>{data.folder.title}</h3>
-      <Form method="post" encType="multipart/form-data">
-        Upload a file
+      <Form
+        method="post"
+        encType="multipart/form-data"
+        className="flex flex-col justify-center items-center"
+      >
         <input name="file" type="file" accept="audio/*" />
-        <input name="filename" type="text" placeholder="File Name" />
-        <button type="submit">save</button>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          save file
+        </button>
       </Form>
     </div>
   );

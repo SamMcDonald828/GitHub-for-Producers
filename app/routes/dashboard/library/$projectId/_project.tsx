@@ -50,6 +50,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       title: title?.toString() || "", // Ensure title and body are strings
       body: body?.toString() || "",
     });
+    return redirect(`/dashboard/library/${params.projectId}`);
   } else if (_action === "delete") {
     await deleteProject({ id: params.projectId, userId });
   }
@@ -61,7 +62,7 @@ export default function ProjectDetailsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div>
+    <div className="flex flex-col">
       <Form method="post">
         <div className="py-4">
           <input
@@ -78,32 +79,32 @@ export default function ProjectDetailsPage() {
             className="border p-2 rounded w-full"
           />
         </div>
-        <button
-          type="submit"
-          name="_action"
-          value="update"
-          className="px-4 py-2 text-white rounded bg-blue-700 hover:bg-blue-400 focus:bg-blue-400"
-        >
-          Update Project
-        </button>
-      </Form>
-      <Form method="post">
-        <button
-          type="submit"
-          name="_action"
-          value="delete"
-          className="px-4 py-2 text-white rounded bg-red-700 hover:bg-red-400 focus:bg-red-400"
-        >
-          Delete Project
-        </button>
+        <div className="flex inline">
+          <button
+            type="submit"
+            name="_action"
+            value="update"
+            className="flex inline justify-center px-4 py-2 text-white rounded bg-slate-700 hover:bg-blue-400 focus:bg-blue-400"
+          >
+            Update
+          </button>
+          <button
+            type="submit"
+            name="_action"
+            value="delete"
+            className="px-4 py-2 text-white rounded bg-red-700 hover:bg-red-400 focus:bg-red-400"
+          >
+            Delete
+          </button>
+        </div>
       </Form>
 
-      <Link to="newFolder" className="block p-4 text-xl text-black">
+      <Link to="newFolder" className="flex block text-xl text-black">
         <Button variant="outline" className="shadow-xl size-sm">
           + New Folder
         </Button>
       </Link>
-      <ol className="mx-4 text-slate-500">
+      <ol className="text-slate-500">
         {data.folderList.map((folder) => (
           <li key={folder.id}>
             <NavLink

@@ -44,9 +44,6 @@ export default function NewFolderPage() {
     <div>
       <h3 className="text-xl font-bold">Create a New Folder</h3>
       <Form method="post">
-        <label htmlFor="title" className="block text-lg">
-          Folder Title
-        </label>
         <Input
           className="rounded"
           id="title"
