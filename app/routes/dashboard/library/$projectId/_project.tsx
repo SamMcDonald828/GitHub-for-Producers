@@ -71,7 +71,8 @@ export default function ProjectDetailsPage() {
           className="border rounded w-full p-2"
         />
         <div className="">
-          <textarea
+          <input
+            type="text"
             name="body"
             defaultValue={data.project.body || ""}
             className="border rounded w-full p-2"
