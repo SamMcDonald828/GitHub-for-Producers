@@ -20,7 +20,12 @@ import { getFolder, deleteFolder } from "~/models/folder.server";
 import { requireUserId } from "~/session.server";
 import { s3UploadHandler, uploadStreamToS3 } from "~/utils/s3.server";
 import { k } from "vite/dist/node/types.d-aGj9QkWt";
-import { createFile, getFile, getFileList } from "~/models/file.server";
+import {
+  createFile,
+  getFile,
+  getFileList,
+  updatedFile,
+} from "~/models/file.server";
 import { prisma } from "~/db.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -48,37 +53,39 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   await requireUserId(request);
 
   const file = await createFile({
-    id: params.fileId || " ",
+    // automatically generate a unique id for the file
     folderId: params.folderId || "",
-    title: "", // Add a default value for title
+    title: "" as string, // Add a default value for title
     remoteUrl: "", // Add a default value for remoteUrl
   });
-  // const folder = await getFolder();
-  // const key = "123";
 
   const s3UploadHandler: UploadHandler = async ({ filename, data }) => {
     const key = file.id;
     const bucket = "spring-tree-3095";
     // const bucket = params.folderId;
-
     const fileKey = await uploadStreamToS3(data, filename!, key, bucket);
     return fileKey;
   };
-
   const formData = await unstable_parseMultipartFormData(
     request,
     s3UploadHandler,
   );
 
-  const fileKey = formData.get("file");
-  //const fileName = formData.get("filename");
-  // const updatedFile = await prisma.file.update({
-  //   where: { id: file.id, folderId: params.folderId },
-  //   data: {
-  //     title: fileName as string,
-  //     remoteUrl: `https://spring-tree-3095.fly.storage.tigris.dev/${params.folderId}/${file.id}`,
-  //   },
-  // });
+  // Update file name after upload started
+  // const fileKey = formData.get("file");
+  const fileUrl = `https://spring-tree-3095.fly.storage.tigris.dev/${params.folderId}/${file.id}`;
+  const formInput = await request.formData();
+  const fileTitle = formInput.get("filename");
+  console.log(fileTitle);
+
+  await updatedFile({
+    id: file.id,
+    folderId: params.folderId as string,
+    title: fileTitle as string,
+    remoteUrl: fileUrl as string,
+  });
+
+  //title: fileName as string,
   // const fileUrl = `https://spring-tree-3095.fly.storage.tigris.dev/${fileBucket}/${fileKey}`;
 
   invariant(params.folderId, "folderId not found");
@@ -113,14 +120,20 @@ export default function FolderDetailsPage() {
           <li key={file.id}>
             <NavLink
               className="block p-2 text-slate-500 hover:text-slate-700"
-              to={`${data.folder.id}/${file.id}`}
+              to={`${file.id}`}
             >
-              {file.id}
+              <p>{file.title}</p>
             </NavLink>
+            {/* future  <Link
+              to={`https://spring-tree-3095.fly.storage.tigris.dev/${data.folder.id}/${file.id}`}
+            >
+              <button type="submit">download</button>
+            </Link> */}
           </li>
         ))}
       </ol>
       {/* <AudioFile fileId={fileId}/> */}
+      {/* Create a file component that shows the waveform and takes in a selected fileId, fileTitle, remoteURL */}
     </div>
   );
 }

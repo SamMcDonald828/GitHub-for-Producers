@@ -24,11 +24,10 @@ export function getFileList({ folderId }: { folderId: Folder["id"] }) {
 }
 
 export function createFile({
-  id,
   title,
   remoteUrl,
   folderId,
-}: Pick<File, "id" | "title" | "remoteUrl"> & { folderId: Folder["id"] }) {
+}: Pick<File, "title" | "remoteUrl"> & { folderId: Folder["id"] }) {
   return prisma.file.create({
     data: {
       title,
@@ -38,6 +37,21 @@ export function createFile({
           id: folderId,
         },
       },
+    },
+  });
+}
+
+export function updatedFile({
+  id,
+  folderId,
+  title,
+  remoteUrl,
+}: Pick<File, "id" | "title" | "remoteUrl"> & { folderId: Folder["id"] }) {
+  return prisma.file.update({
+    where: { id, folderId },
+    data: {
+      title,
+      remoteUrl,
     },
   });
 }
