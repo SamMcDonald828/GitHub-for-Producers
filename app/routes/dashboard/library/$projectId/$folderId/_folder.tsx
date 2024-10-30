@@ -114,13 +114,13 @@ export default function FolderDetailsPage() {
       >
         <div className="flex inline space-x-4">
           <h3 className="text-l my-auto font-semibold">{data.folder.title}</h3>
-          <input name="file" type="file" accept="audio/*" />
+          <input name="file" type="file" accept="audio/*" required />
         </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="flex inline justify-center px-4 py-2 text-white rounded bg-slate-700 hover:bg-blue-400 focus:bg-blue-400"
         >
-          save file
+          upload file(s)
         </button>
       </Form>
       <ol>
