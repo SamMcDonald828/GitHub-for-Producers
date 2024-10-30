@@ -20,11 +20,16 @@ import { getFolder, deleteFolder } from "~/models/folder.server";
 import { requireUserId } from "~/session.server";
 import { s3UploadHandler, uploadStreamToS3 } from "~/utils/s3.server";
 import { k } from "vite/dist/node/types.d-aGj9QkWt";
-import { createFile } from "~/models/file.server";
+import { createFile, getFile, getFileList } from "~/models/file.server";
 import { prisma } from "~/db.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
+  const files = await getFileList({ folderId: params.folderId as string });
+  const fileId = await getFile({
+    id: params.fileId as string,
+    folderId: params.folderId as string,
+  });
 
   invariant(params.folderId, "folderId not found");
   invariant(params.projectId, "projectId not found");
@@ -36,7 +41,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   if (!folder) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json({ folder });
+  return json({ folder, fileId, files });
 };
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
@@ -103,6 +108,19 @@ export default function FolderDetailsPage() {
           save file
         </button>
       </Form>
+      <ol>
+        {data.files.map((file) => (
+          <li key={file.id}>
+            <NavLink
+              className="block p-2 text-slate-500 hover:text-slate-700"
+              to={`${data.folder.id}/${file.id}`}
+            >
+              {file.id}
+            </NavLink>
+          </li>
+        ))}
+      </ol>
+      {/* <AudioFile fileId={fileId}/> */}
     </div>
   );
 }

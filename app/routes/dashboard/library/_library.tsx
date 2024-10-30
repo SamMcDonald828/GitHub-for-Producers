@@ -13,8 +13,8 @@ export default function LibraryPage() {
   const data = useLoaderData<typeof loader>();
   return (
     <>
-      <main className="flex bg-white">
-        <div className="h-full overflow-scroll border-r bg-gray-50 w-42">
+      <main className="flex h-full bg-white">
+        <div className="overflow-scroll border-r bg-gray-50">
           <Link to="new" className="block p-4 text-xl text-black">
             <Button
               variant="outline"
@@ -24,7 +24,7 @@ export default function LibraryPage() {
               + New Project
             </Button>
           </Link>
-          <ol className="mx-4 text-slate-500">
+          <ol className="h-full mx-4 text-slate-500">
             {data.projectListItems.map((project) => (
               <li key={project.id}>
                 <NavLink
