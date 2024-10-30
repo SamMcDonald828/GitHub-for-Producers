@@ -1,5 +1,7 @@
+import { CreateBucketCommand, ListObjectsCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import type { Project, Folder } from "@prisma/client";
 import { prisma } from "~/db.server";
+import { s3 } from "~/utils/s3.server";
 
 export type { Folder } from "@prisma/client";
 
@@ -48,4 +50,38 @@ export function deleteFolder({
   return prisma.folder.deleteMany({
     where: { id, projectId },
   });
+}
+
+
+// _folder.tsx
+/*
+
+const bucket = await createBucket(project.id);
+bucket.Key === project.id;
+
+const objects = await listBucket(project.id);
+objects.forEach((object) => {
+  object.Key;
+  object.Key === file.id;
+  object.Location;
+});
+
+*/
+
+
+export async function createBucket(id: string) {
+  // make a directory
+  const command = new CreateBucketCommand({
+    Bucket: id
+  });
+  const response = await s3.send(command);
+  return response.Contents;
+}
+
+export async function listBucket(id: string) {
+  const command = new ListObjectsCommand({
+    Bucket: id
+  })
+  const response = await s3.send(command);
+  return response.Contents;
 }
