@@ -84,7 +84,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 
   // Update file name after upload started
   const fileKey = fileData.get("file");
-  const fileUrl = `https://spring-tree-3095.fly.storage.tigris.dev/${params.folderId}/${file.id}`;
+  const fileUrl = `https://fly.storage.tigris.dev/${data.folder.id}/${file.id}`;
 
   await updatedFile({
     id: file.id,
@@ -128,7 +128,7 @@ export default function FolderDetailsPage() {
           <li key={file.id}>
             <NavLink
               className="block p-2 text-slate-500 hover:text-slate-700"
-              to={`${file.id}`}
+              to={`https://spring-tree-3095.fly.storage.tigris.dev/${data.folder.id}/${file.id}`}
             >
               <p>{file.title}</p>
             </NavLink>
