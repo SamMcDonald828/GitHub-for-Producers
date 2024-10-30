@@ -81,7 +81,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   );
 
   // Set file link after upload started
-  const fileUrl = `https://fly.storage.tigris.dev/${folder?.id}/${file.id}`;
+  const fileUrl = `https://fly.storage.tigris.dev/${folder!.id}/${file.id}`;
   // Update file name after upload started
   await updatedFile({
     id: file.id,
@@ -112,7 +112,7 @@ export default function FolderDetailsPage() {
         </div>
         <button
           type="submit"
-          className="flex inline justify-center px-4 py-2 text-white rounded bg-slate-700 hover:bg-blue-400 focus:bg-blue-400"
+          className="flex inline justify-center px-4 py-2 text-white rounded bg-slate-700 hover:bg-blue-400 focus:bg-slate-200"
         >
           upload file(s)
         </button>

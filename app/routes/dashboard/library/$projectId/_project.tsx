@@ -11,7 +11,7 @@ import {
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { Button } from "~/components/components/ui/button";
-import { getFolderList } from "~/models/folder.server";
+import { deleteFolder, getFolderList } from "~/models/folder.server";
 import {
   deleteProject,
   getProject,
@@ -53,6 +53,13 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     return redirect(`/dashboard/library/${params.projectId}`);
   } else if (_action === "delete") {
     await deleteProject({ id: params.projectId, userId });
+  } else if (_action === "deleteFolder") {
+    await deleteFolder({
+      id: params.folderId as string,
+      projectId: params.projectId,
+    });
+    await 
+    return redirect(`/dashboard/library/${params.projectId}`);
   }
 
   return redirect("/dashboard/library");
@@ -112,7 +119,11 @@ export default function ProjectDetailsPage() {
                 }
                 to={`${folder.id}`}
               >
-                {folder.title}
+                {folder.title}{" "}
+                <button name="_action" value="deleteFolder">
+                  {" "}
+                  delete{" "}
+                </button>
               </NavLink>
               {/* delete folder function */}
             </li>

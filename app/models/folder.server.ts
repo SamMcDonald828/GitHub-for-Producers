@@ -1,5 +1,6 @@
 import {
   CreateBucketCommand,
+  DeleteBucketCommand,
   ListObjectsCommand,
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
@@ -79,6 +80,13 @@ export async function createBucket(id: string) {
   });
   const response = await s3.send(command);
   return response;
+}
+
+export async function deleteBucket(id: string) {
+  // delete the directory
+  const command = new DeleteBucketCommand({ Bucket: id });
+  await s3.send(command);
+  return;
 }
 
 export async function listBucket(id: string) {
