@@ -63,20 +63,18 @@ export default function ProjectDetailsPage() {
 
   return (
     <div className="flex flex-col">
-      <Form method="post">
-        <div className="py-4">
-          <input
-            type="text"
-            name="title"
-            defaultValue={data.project.title || ""}
-            className="border p-2 rounded w-full"
-          />
-        </div>
-        <div className="py-4">
+      <Form method="post" className="space-y-5">
+        <input
+          type="text"
+          name="title"
+          defaultValue={data.project.title || ""}
+          className="border rounded w-full p-2"
+        />
+        <div className="">
           <textarea
             name="body"
             defaultValue={data.project.body || ""}
-            className="border p-2 rounded w-full"
+            className="border rounded w-full p-2"
           />
         </div>
         <div className="flex inline">
@@ -98,27 +96,28 @@ export default function ProjectDetailsPage() {
           </button>
         </div>
       </Form>
-
-      <Link to="newFolder" className="flex block text-xl text-black">
-        <Button variant="outline" className="shadow-xl size-sm">
-          + New Folder
-        </Button>
-      </Link>
-      <ol className="text-slate-500">
-        {data.folderList.map((folder) => (
-          <li key={folder.id}>
-            <NavLink
-              className={({ isActive }) =>
-                `block p-2 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
-              }
-              to={`${folder.id}`}
-            >
-              {folder.title}
-            </NavLink>
-          </li>
-        ))}
-      </ol>
-      <Outlet />
+      <div className="space-y-5 mt-4">
+        <Link to="newFolder" className="flex block text-xl text-black">
+          <Button variant="outline" className="shadow-xl size-sm">
+            + New Folder
+          </Button>
+        </Link>
+        <ol className="text-slate-500 h-24 overflow-scroll rounded bg-slate-200">
+          {data.folderList.map((folder) => (
+            <li key={folder.id}>
+              <NavLink
+                className={({ isActive }) =>
+                  `block p-2 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
+                }
+                to={`${folder.id}`}
+              >
+                {folder.title}
+              </NavLink>
+            </li>
+          ))}
+        </ol>
+        <Outlet />
+      </div>
     </div>
   );
 }

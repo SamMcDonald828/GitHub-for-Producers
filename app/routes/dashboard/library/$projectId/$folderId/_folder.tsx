@@ -86,14 +86,16 @@ export default function FolderDetailsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex flex-col">
-      <h3>{data.folder.title}</h3>
+    <div className="flex flex-col bg-slate-200 rounded">
       <Form
         method="post"
         encType="multipart/form-data"
-        className="flex flex-col justify-center items-center"
+        className="flex flex-col space-y-4"
       >
-        <input name="file" type="file" accept="audio/*" />
+        <div className="flex inline space-x-4">
+          <h3 className="text-l my-auto font-semibold">{data.folder.title}</h3>
+          <input name="file" type="file" accept="audio/*" />
+        </div>
         <button
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded"
