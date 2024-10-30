@@ -59,11 +59,11 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     remoteUrl: "", // Add a default value for remoteUrl
   });
 
-  let fileName = "";
+  let title = "" as string;
   const s3UploadHandler: UploadHandler = async ({ filename, data }) => {
     const key = file.id;
     const bucket = "spring-tree-3095";
-    fileName = filename;
+    title = filename;
     // const bucket = params.folderId;
     const fileKey = await uploadStreamToS3(data, filename!, key, bucket);
     return fileKey;
@@ -81,7 +81,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   await updatedFile({
     id: file.id,
     folderId: params.folderId as string,
-    title: fileName as string,
+    title: title as string,
     remoteUrl: fileUrl as string,
   });
 
