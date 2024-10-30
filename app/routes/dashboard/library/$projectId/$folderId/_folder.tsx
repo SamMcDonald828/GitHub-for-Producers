@@ -47,6 +47,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     throw new Response("Not Found", { status: 404 });
   }
   const objects = await listBucket(folder.id);
+  objects?.forEach((object) => {
+    object.Key;
+    object.Size;
+  });
   return json({ folder, fileId, files, objects });
 };
 
