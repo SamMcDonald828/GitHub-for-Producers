@@ -126,7 +126,7 @@ export default function FolderDetailsPage() {
           <li key={file.id}>
             <NavLink
               className="block p-2 text-slate-500 hover:text-slate-700"
-              to={`https://spring-tree-3095.fly.storage.tigris.dev/${data.folder.id}/${file.id}`}
+              to={file.remoteUrl}
             >
               <p>{file.title}</p>
             </NavLink>
