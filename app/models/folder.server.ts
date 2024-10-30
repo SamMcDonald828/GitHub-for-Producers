@@ -1,4 +1,8 @@
-import { CreateBucketCommand, ListObjectsCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  CreateBucketCommand,
+  ListObjectsCommand,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3";
 import type { Project, Folder } from "@prisma/client";
 import { prisma } from "~/db.server";
 import { s3 } from "~/utils/s3.server";
@@ -52,7 +56,6 @@ export function deleteFolder({
   });
 }
 
-
 // _folder.tsx
 /*
 
@@ -68,20 +71,19 @@ objects.forEach((object) => {
 
 */
 
-
 export async function createBucket(id: string) {
   // make a directory
   const command = new CreateBucketCommand({
-    Bucket: id
+    Bucket: id,
   });
   const response = await s3.send(command);
-  return response.Contents;
+  return response;
 }
 
 export async function listBucket(id: string) {
   const command = new ListObjectsCommand({
-    Bucket: id
-  })
+    Bucket: id,
+  });
   const response = await s3.send(command);
   return response.Contents;
 }

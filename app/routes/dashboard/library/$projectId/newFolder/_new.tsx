@@ -1,6 +1,6 @@
 import { Form, useActionData } from "@remix-run/react";
 import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
-import { createFolder } from "~/models/folder.server";
+import { createBucket, createFolder } from "~/models/folder.server";
 import { requireUserId } from "~/session.server";
 import invariant from "tiny-invariant";
 import { useEffect, useRef } from "react";
@@ -21,11 +21,12 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     throw new Response("Invalid title", { status: 400 });
   }
 
-  // Create a new folder using the projectId from params
+  // Create a new folder and bucket for storage using the projectId from params
   const folder = await createFolder({
     title,
     projectId: params.projectId as string,
   });
+  const bucket = await createBucket(folder.id);
 
   // Redirect to the created folder's page
   return redirect(`/dashboard/library/${params.projectId}/${folder.id}`);

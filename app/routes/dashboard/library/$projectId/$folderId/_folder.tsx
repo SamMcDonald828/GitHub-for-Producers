@@ -16,7 +16,7 @@ import {
 import { unstable_parseMultipartFormData } from "@remix-run/node";
 import invariant from "tiny-invariant";
 import { Button } from "~/components/components/ui/button";
-import { getFolder, deleteFolder } from "~/models/folder.server";
+import { getFolder, deleteFolder, listBucket } from "~/models/folder.server";
 import { requireUserId } from "~/session.server";
 import { s3UploadHandler, uploadStreamToS3 } from "~/utils/s3.server";
 import { k } from "vite/dist/node/types.d-aGj9QkWt";
@@ -46,11 +46,16 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   if (!folder) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json({ folder, fileId, files });
+  const objects = await listBucket(folder.id);
+  return json({ folder, fileId, files, objects });
 };
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
   await requireUserId(request);
+  const folder = await getFolder({
+    id: params.folderId as string,
+    projectId: params.projectId as string,
+  });
 
   const file = await createFile({
     // automatically generate a unique id for the file
@@ -62,8 +67,8 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   let title = "" as string;
   const s3UploadHandler: UploadHandler = async ({ filename, data }) => {
     const key = file.id;
-    const bucket = "spring-tree-3095";
-    title = filename;
+    const bucket = folder!.id;
+    title = filename as string;
     // const bucket = params.folderId;
     const fileKey = await uploadStreamToS3(data, filename!, key, bucket);
     return fileKey;
@@ -76,7 +81,6 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   // Update file name after upload started
   const fileKey = fileData.get("file");
   const fileUrl = `https://spring-tree-3095.fly.storage.tigris.dev/${params.folderId}/${file.id}`;
-
 
   await updatedFile({
     id: file.id,
