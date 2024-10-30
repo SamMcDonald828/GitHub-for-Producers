@@ -85,8 +85,8 @@ export async function createBucket(id: string) {
 export async function deleteBucket(id: string) {
   // delete the directory
   const command = new DeleteBucketCommand({ Bucket: id });
-  await s3.send(command);
-  return;
+  const response = await s3.send(command);
+  return response;
 }
 
 export async function listBucket(id: string) {

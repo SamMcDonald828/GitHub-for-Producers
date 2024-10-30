@@ -11,7 +11,12 @@ import {
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { Button } from "~/components/components/ui/button";
-import { deleteFolder, getFolderList } from "~/models/folder.server";
+import {
+  deleteBucket,
+  deleteFolder,
+  getFolder,
+  getFolderList,
+} from "~/models/folder.server";
 import {
   deleteProject,
   getProject,
@@ -54,11 +59,23 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   } else if (_action === "delete") {
     await deleteProject({ id: params.projectId, userId });
   } else if (_action === "deleteFolder") {
-    await deleteFolder({
+    // Fetch the folder before attempting to delete the bucket
+    const folder = await getFolder({
       id: params.folderId as string,
       projectId: params.projectId,
     });
-    await 
+
+    // Ensure `folder` exists before calling `deleteBucket`
+    if (folder) {
+      await deleteBucket(folder.id);
+      await deleteFolder({
+        id: params.folderId as string,
+        projectId: params.projectId,
+      });
+    } else {
+      throw new Response("Folder Not Found", { status: 404 });
+    }
+
     return redirect(`/dashboard/library/${params.projectId}`);
   }
 
