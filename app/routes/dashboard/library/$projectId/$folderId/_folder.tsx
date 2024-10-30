@@ -62,7 +62,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   const file = await createFile({
     // automatically generate a unique id for the file
     folderId: params.folderId || "",
-    title: "" as string, // Add a default value for title
+    title: "", // Add a default value for title
     remoteUrl: "", // Add a default value for remoteUrl
   });
 
@@ -71,28 +71,24 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     const key = file.id;
     const bucket = folder!.id;
     title = filename as string;
-    // const bucket = params.folderId;
     const fileKey = await uploadStreamToS3(data, filename!, key, bucket);
     return fileKey;
   };
+
   const fileData = await unstable_parseMultipartFormData(
     request,
     s3UploadHandler,
   );
 
-  // Update file name after upload started
-  const fileKey = fileData.get("file");
+  // Set file link after upload started
   const fileUrl = `https://fly.storage.tigris.dev/${folder?.id}/${file.id}`;
-
+  // Update file name after upload started
   await updatedFile({
     id: file.id,
     folderId: params.folderId as string,
     title: title as string,
     remoteUrl: fileUrl as string,
   });
-
-  //title: fileName as string,
-  // const fileUrl = `https://spring-tree-3095.fly.storage.tigris.dev/${fileBucket}/${fileKey}`;
 
   invariant(params.folderId, "folderId not found");
   invariant(params.projectId, "projectId not found");
