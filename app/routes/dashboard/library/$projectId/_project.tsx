@@ -114,6 +114,7 @@ export default function ProjectDetailsPage() {
               >
                 {folder.title}
               </NavLink>
+              {/* delete folder function */}
             </li>
           ))}
         </ol>
