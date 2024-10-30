@@ -59,29 +59,29 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     remoteUrl: "", // Add a default value for remoteUrl
   });
 
+  let fileName = "";
   const s3UploadHandler: UploadHandler = async ({ filename, data }) => {
     const key = file.id;
     const bucket = "spring-tree-3095";
+    fileName = filename;
     // const bucket = params.folderId;
     const fileKey = await uploadStreamToS3(data, filename!, key, bucket);
     return fileKey;
   };
-  const formData = await unstable_parseMultipartFormData(
+  const fileData = await unstable_parseMultipartFormData(
     request,
     s3UploadHandler,
   );
 
   // Update file name after upload started
-  // const fileKey = formData.get("file");
+  const fileKey = fileData.get("file");
   const fileUrl = `https://spring-tree-3095.fly.storage.tigris.dev/${params.folderId}/${file.id}`;
-  const formInput = await request.formData();
-  const fileTitle = formInput.get("filename");
-  console.log(fileTitle);
+
 
   await updatedFile({
     id: file.id,
     folderId: params.folderId as string,
-    title: fileTitle as string,
+    title: fileName as string,
     remoteUrl: fileUrl as string,
   });
 
