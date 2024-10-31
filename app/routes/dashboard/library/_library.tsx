@@ -11,38 +11,55 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 export default function LibraryPage() {
   const data = useLoaderData<typeof loader>();
+  function openProjectsList() {
+    const projectListElement = document.getElementById("projectList");
+    if (projectListElement) {
+      projectListElement.classList.toggle("hidden");
+    }
+  }
+
   return (
     <>
       <main className="flex h-full bg-white">
-        <div className="overflow-scroll border-r bg-gray-50">
-          <Link to="new" className="block p-4 text-xl text-black">
-            <Button
-              variant="outline"
-              type="submit"
-              className="shadow-xl size-sm"
-            >
-              + New Project
-            </Button>
-          </Link>
-          <ol className="h-full mx-4 text-slate-500">
-            {data.projectListItems.map((project) => (
-              <li key={project.id}>
-                <NavLink
-                  className={({ isActive }) =>
-                    `block p-2 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
-                  }
-                  to={project.id}
-                >
-                  {project.title}
-                  {/*<p>{project.body}</p>*/}
-                </NavLink>
-              </li>
-            ))}
-          </ol>
+        <div className="flex flex-col inline">
+          <button
+            onClick={openProjectsList}
+            className="p-1 text-white rounded bg-blue-400 hover:bg-blue-500 focus:bg-blue-500"
+            id="svg"
+          >
+            SVG
+          </button>
+          <div
+            id="projectList"
+            className="overflow-scroll flex flex-col z-10 bg-slate-200 h-full"
+          >
+            <Link to="new" className="text-sm text-black mx-2">
+              <Button
+                variant="outline"
+                type="submit"
+                className="shadow-lg size-xs"
+              >
+                + New Project
+              </Button>
+            </Link>
+            <ol className="h-full flex-col text-slate-500 flex mx-2">
+              {data.projectListItems.map((project) => (
+                <li key={project.id}>
+                  <NavLink
+                    className={({ isActive }) =>
+                      `p-1 flex ${isActive ? "bg-slate-700 text-white rounded" : ""}`
+                    }
+                    to={project.id}
+                  >
+                    {project.title}
+                    {/*<p>{project.body}</p>*/}
+                  </NavLink>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
-        <div className="mx-4">
-          <Outlet />
-        </div>
+        <Outlet />
       </main>
     </>
   );

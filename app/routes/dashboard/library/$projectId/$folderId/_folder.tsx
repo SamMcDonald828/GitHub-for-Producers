@@ -100,28 +100,25 @@ export default function FolderDetailsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex flex-col bg-slate-200 rounded">
-      <Form
-        method="post"
-        encType="multipart/form-data"
-        className="flex flex-col space-y-4"
-      >
-        <div className="flex inline space-x-4">
+    <div className="flex w-full bg-slate-400 rounded object-fit">
+      <Form method="post" encType="multipart/form-data" className="w-1/2 m-2">
+        <div className="flex flex-col space-y-2">
           <h3 className="text-l my-auto font-semibold">{data.folder.title}</h3>
           <input name="file" type="file" accept="audio/*" required />
+          <button
+            type="submit"
+            className="p-1 text-white rounded bg-slate-700 hover:bg-blue-400 focus:bg-slate-200 max-w-28"
+          >
+            upload file(s)
+          </button>
         </div>
-        <button
-          type="submit"
-          className="flex inline justify-center px-4 py-2 text-white rounded bg-slate-700 hover:bg-blue-400 focus:bg-slate-200"
-        >
-          upload file(s)
-        </button>
       </Form>
-      <ol>
+      <ol className="flex flex-wrap w-1/2 flex-col">
+        <h3>Files</h3>
         {data.files.map((file) => (
           <li key={file.id}>
             <NavLink
-              className="block p-2 text-slate-500 hover:text-slate-700"
+              className="block text-slate-500 hover:text-slate-700"
               to={file.remoteUrl}
             >
               <p>{file.title}</p>
