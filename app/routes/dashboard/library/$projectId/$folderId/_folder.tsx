@@ -25,6 +25,7 @@ import {
   getFileList,
   updatedFile,
 } from "~/models/file.server";
+import WaveformVisual from "~/components/WaveformVisual";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
@@ -131,6 +132,7 @@ export default function FolderDetailsPage() {
           </li>
         ))}
       </ol>
+      <WaveformVisual audioSrc={data.files[0].remoteUrl} />
       {/* <AudioFile fileId={fileId}/> */}
       {/* Create a file component that shows the waveform and takes in a selected fileId, fileTitle, remoteURL */}
     </div>

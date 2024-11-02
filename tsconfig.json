@@ -1,16 +1,22 @@
 {
   "exclude": ["./cypress", "./cypress.config.ts"],
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", "app/routes/library/index.tsx", "app/routes/_home.tsx"],
+  "include": [
+    "remix.env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "app/routes/library/index.tsx",
+    "app/routes/_home.tsx"
+  ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2020"],
     "types": ["vitest/globals"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "module": "CommonJS",
+    "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "target": "ES2020",
+    "target": "ESNext",
     "strict": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
