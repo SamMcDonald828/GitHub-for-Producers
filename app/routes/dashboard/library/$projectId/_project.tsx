@@ -121,7 +121,7 @@ export default function ProjectDetailsPage() {
           </div>
         </div>
       </Form>
-      <div className="bg-slate-200 flex flex-col">
+      <div className="bg-slate-200 flex flex-col max-w-[1000px]">
         <div className="flex inline justify-between">
           <h2 className="text-xl text-slate-500">Folders(branches)</h2>
           <Link to="newFolder" className="flex block text-m text-black">
