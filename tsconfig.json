@@ -5,7 +5,8 @@
     "**/*.ts",
     "**/*.tsx",
     "app/routes/library/index.tsx",
-    "app/routes/_home.tsx"
+    "app/routes/_home.tsx",
+    "app/components/WaveformVisual.jsx"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2020"],
