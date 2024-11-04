@@ -15,7 +15,6 @@ import {
 } from "@remix-run/react";
 import { unstable_parseMultipartFormData } from "@remix-run/node";
 import invariant from "tiny-invariant";
-import { Button } from "~/components/components/ui/button";
 import { getFolder, deleteFolder, listBucket } from "~/models/folder.server";
 import { requireUserId } from "~/session.server";
 import { s3UploadHandler, uploadStreamToS3 } from "~/utils/s3.server";
@@ -25,7 +24,7 @@ import {
   getFileList,
   updatedFile,
 } from "~/models/file.server";
-import WaveformVisual from "~/components/WaveformVisual";
+import AudioWaveform from "~/components/AudioWaveform";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const userId = await requireUserId(request);
@@ -120,7 +119,7 @@ export default function FolderDetailsPage() {
           <li key={file.id}>
             <div className="block text-slate-500 hover:text-slate-700">
               <p>{file.title}</p>
-              <WaveformVisual audioSrc={file.remoteUrl} />
+              <AudioWaveform audioSrc={file.remoteUrl} />
             </div>
             {/* future  <Link
               to={`https://spring-tree-3095.fly.storage.tigris.dev/${data.folder.id}/${file.id}`}

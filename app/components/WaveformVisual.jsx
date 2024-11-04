@@ -37,10 +37,8 @@ export default function WaveformVisual({ audioSrc }) {
   }, []);
 
   useEffect(() => {
-    if (isPlaying) {
-      startVisualization();
-    }
-  }, [isPlaying, audioSrc]);
+    startVisualization();
+  }, [audioSrc]);
 
   const visualize = (audioBuffer) => {
     const filteredData = filterData(audioBuffer);
@@ -117,7 +115,7 @@ export default function WaveformVisual({ audioSrc }) {
     <div>
       <canvas
         ref={canvasRef}
-        style={{ width: "240px", height: "40px" }}
+        style={{ width: "240px", height: "60px" }}
       ></canvas>
       <audio
         ref={audioRef}

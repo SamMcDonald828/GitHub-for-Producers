@@ -6,7 +6,8 @@
     "**/*.tsx",
     "app/routes/library/index.tsx",
     "app/routes/_home.tsx",
-    "app/components/WaveformVisual.jsx"
+    "app/components/WaveformVisual.jsx",
+    "app/components/AudioWaveform.jsx"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2020"],
