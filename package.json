@@ -2,7 +2,6 @@
   "name": "blues-stack-template",
   "private": true,
   "sideEffects": false,
-  "type": "module",
   "scripts": {
     "build": "run-s build:*",
     "build:remix": "remix build",
