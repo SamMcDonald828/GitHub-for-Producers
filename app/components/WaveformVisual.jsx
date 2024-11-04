@@ -1,14 +1,32 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function WaveformVisual({ audioSrc }) {
-  // Create refs for the canvas and audio context
-  const canvasRef = useRef(null);
-  const audioContextRef = useRef(null);
+  const canvasRef = useRef(null); // For canvas drawing
+  const audioRef = useRef(null); // For the <audio> element
+  const audioContextRef = useRef(null); // For the AudioContext
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const initializeAudioContext = () => {
+    if (!audioContextRef.current) {
+      audioContextRef.current = new (window.AudioContext ||
+        window.webkitAudioContext)();
+    }
+  };
+
+  const startVisualization = () => {
+    if (!audioSrc || !audioContextRef.current) return;
+
+    fetch(audioSrc)
+      .then((response) => response.arrayBuffer())
+      .then((arrayBuffer) =>
+        audioContextRef.current.decodeAudioData(arrayBuffer),
+      )
+      .then((audioBuffer) => visualize(audioBuffer))
+      .catch((error) => console.error("Error decoding audio data:", error));
+  };
 
   useEffect(() => {
-    // Initialize the audio context on first load
-    audioContextRef.current = new (window.AudioContext ||
-      window.webkitAudioContext)();
+    initializeAudioContext();
 
     // Clean up on component unmount
     return () => {
@@ -19,18 +37,15 @@ export default function WaveformVisual({ audioSrc }) {
   }, []);
 
   useEffect(() => {
-    if (audioSrc && audioContextRef.current) {
-      visualizeAudio(audioSrc);
+    if (isPlaying) {
+      startVisualization();
     }
-  }, [audioSrc]);
+  }, [isPlaying, audioSrc]);
 
-  const visualizeAudio = (url) => {
-    fetch(url)
-      .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) =>
-        audioContextRef.current.decodeAudioData(arrayBuffer),
-      )
-      .then((audioBuffer) => visualize(audioBuffer));
+  const visualize = (audioBuffer) => {
+    const filteredData = filterData(audioBuffer);
+    const normalizedData = normalizeData(filteredData);
+    draw(normalizedData);
   };
 
   const filterData = (audioBuffer) => {
@@ -52,12 +67,6 @@ export default function WaveformVisual({ audioSrc }) {
   const normalizeData = (filteredData) => {
     const multiplier = Math.pow(Math.max(...filteredData), -1);
     return filteredData.map((n) => n * multiplier);
-  };
-
-  const visualize = (audioBuffer) => {
-    const filteredData = filterData(audioBuffer);
-    const normalizedData = normalizeData(filteredData);
-    draw(normalizedData);
   };
 
   const draw = (normalizedData) => {
@@ -93,10 +102,30 @@ export default function WaveformVisual({ audioSrc }) {
     ctx.stroke();
   };
 
+  const handlePlay = () => {
+    if (audioContextRef.current.state === "suspended") {
+      audioContextRef.current.resume();
+    }
+    setIsPlaying(true);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
+
   return (
     <div>
-      <canvas ref={canvasRef} style={{ width: "200px", height: "50px" }} />
-      <audio src={audioSrc} controls></audio>
+      <canvas
+        ref={canvasRef}
+        style={{ width: "275px", height: "100px" }}
+      ></canvas>
+      <audio
+        ref={audioRef}
+        src={audioSrc}
+        controls
+        onPlay={handlePlay}
+        onPause={handlePause}
+      ></audio>
     </div>
   );
 }
