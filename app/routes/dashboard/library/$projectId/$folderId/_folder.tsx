@@ -135,7 +135,7 @@ export default function FolderDetailsPage() {
       </ol>
       <audio controls>
         <source src={data.files[0].remoteUrl} type="audio/*" />
-        <source src={data.files[0].remoteUrl} type="audio/ogg" />
+        <source src={data.files[0].remoteUrl} type="audio/wav" />
         <p>
           Download{" "}
           <a href={data.files[0].remoteUrl} download="myAudio.mp3">
