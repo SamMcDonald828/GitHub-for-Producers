@@ -1,78 +1,97 @@
 import React, { useEffect, useRef } from "react";
-import * as Tone from "tone";
 
-interface WaveformVisualizerProps {
-  audioSrc: string | undefined;
-}
-
-const WaveformVisual: React.FC<WaveformVisualizerProps> = ({ audioSrc }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const analyser = useRef<Tone.Analyser | null>(null);
-  const player = useRef<Tone.Player | null>(null);
+export default function WaveformVisual({ audioSrc }) {
+  // Create refs for the canvas and audio context
+  const canvasRef = useRef(null);
+  const audioContextRef = useRef(null);
 
   useEffect(() => {
-    if (!audioSrc) return;
+    // Initialize the audio context on first load
+    audioContextRef.current = new (window.AudioContext ||
+      window.webkitAudioContext)();
 
-    // Create Tone.js Player and Analyser
-    player.current = new Tone.Player(audioSrc).toDestination();
-
-    // Create analyser with correct type
-    analyser.current = new Tone.Analyser("wave" as Tone.AnalyserType); // Cast to Tone.AnalyserType
-
-    // Connect Player to Analyser
-    player.current.connect(analyser.current);
-
-    // Start playing the audio
-    Tone.start().then(() => {
-      player.current?.start();
-    });
-
-    const canvas = canvasRef.current;
-    const canvasCtx = canvas?.getContext("2d");
-    const draw = () => {
-      if (!analyser.current || !canvasCtx) return;
-
-      requestAnimationFrame(draw);
-
-      // Retrieve the waveform data
-      const dataArray = analyser.current.getValue() as Float32Array;
-      canvasCtx.fillStyle = "rgb(200, 200, 200)";
-      canvasCtx.fillRect(0, 0, canvas!.width, canvas!.height);
-      canvasCtx.lineWidth = 2;
-      canvasCtx.strokeStyle = "rgb(0, 0, 0)";
-      canvasCtx.beginPath();
-
-      const sliceWidth = canvas!.width / dataArray.length;
-      let x = 0;
-
-      // Loop through the dataArray and draw the waveform
-      for (let i = 0; i < dataArray.length; i++) {
-        const v = dataArray[i]; // No need to divide by 128.0 since we're using a normalized Float32Array
-        const y = (v * canvas!.height) / 2 + canvas!.height / 2; // Center the waveform vertically
-
-        if (i === 0) {
-          canvasCtx.moveTo(x, y);
-        } else {
-          canvasCtx.lineTo(x, y);
-        }
-
-        x += sliceWidth;
-      }
-      canvasCtx.lineTo(canvas!.width, canvas!.height / 2);
-      canvasCtx.stroke();
-    };
-
-    draw();
-
+    // Clean up on component unmount
     return () => {
-      // Clean up: stop the player when the component unmounts
-      player.current?.stop();
-      player.current?.dispose();
-      analyser.current?.dispose();
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
     };
+  }, []);
+
+  useEffect(() => {
+    if (audioSrc && audioContextRef.current) {
+      visualizeAudio(audioSrc);
+    }
   }, [audioSrc]);
 
-  return <canvas ref={canvasRef} width={600} height={200} />;
-};
+  const visualizeAudio = (url) => {
+    fetch(url)
+      .then((response) => response.arrayBuffer())
+      .then((arrayBuffer) =>
+        audioContextRef.current.decodeAudioData(arrayBuffer),
+      )
+      .then((audioBuffer) => visualize(audioBuffer));
+  };
 
-export default WaveformVisual;
+  const filterData = (audioBuffer) => {
+    const rawData = audioBuffer.getChannelData(0);
+    const samples = 70;
+    const blockSize = Math.floor(rawData.length / samples);
+    const filteredData = [];
+    for (let i = 0; i < samples; i++) {
+      let blockStart = blockSize * i;
+      let sum = 0;
+      for (let j = 0; j < blockSize; j++) {
+        sum += Math.abs(rawData[blockStart + j]);
+      }
+      filteredData.push(sum / blockSize);
+    }
+    return filteredData;
+  };
+
+  const normalizeData = (filteredData) => {
+    const multiplier = Math.pow(Math.max(...filteredData), -1);
+    return filteredData.map((n) => n * multiplier);
+  };
+
+  const visualize = (audioBuffer) => {
+    const filteredData = filterData(audioBuffer);
+    const normalizedData = normalizeData(filteredData);
+    draw(normalizedData);
+  };
+
+  const draw = (normalizedData) => {
+    const canvas = canvasRef.current;
+    const dpr = window.devicePixelRatio || 1;
+    const padding = 20;
+    canvas.width = canvas.offsetWidth * dpr;
+    canvas.height = (canvas.offsetHeight + padding * 2) * dpr;
+    const ctx = canvas.getContext("2d");
+    ctx.scale(dpr, dpr);
+    ctx.translate(0, canvas.offsetHeight / 2 + padding);
+
+    const width = canvas.offsetWidth / normalizedData.length;
+    for (let i = 0; i < normalizedData.length; i++) {
+      const x = width * i;
+      let height = normalizedData[i] * canvas.offsetHeight - padding;
+      if (height < 0) height = 0;
+      else if (height > canvas.offsetHeight / 2)
+        height = canvas.offsetHeight / 2;
+      drawLineSegment(ctx, x, height, width, (i + 1) % 2);
+    }
+  };
+
+  const drawLineSegment = (ctx, x, y, width, isEven) => {
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "#fff";
+    ctx.beginPath();
+    y = isEven ? y : -y;
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, y);
+    ctx.arc(x + width / 2, y, width / 2, Math.PI, 0, isEven);
+    ctx.lineTo(x + width, 0);
+    ctx.stroke();
+  };
+
+  return <canvas ref={canvasRef} style={{ width: "100%", height: "100px" }} />;
+}
