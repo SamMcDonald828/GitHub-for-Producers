@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
-import "app/components/AudioWaveform.css"; // Assuming styles are moved to a CSS file
 
 export default function AudioWaveform({ audioSrc }) {
   const waveformRef = useRef(null);
@@ -9,7 +8,6 @@ export default function AudioWaveform({ audioSrc }) {
   const [duration, setDuration] = useState("0:00");
   const [hoverWidth, setHoverWidth] = useState(0);
 
-  // Format time helper function
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const secondsRemainder = Math.round(seconds) % 60;
@@ -21,9 +19,9 @@ export default function AudioWaveform({ audioSrc }) {
     if (!waveSurferRef.current) {
       waveSurferRef.current = WaveSurfer.create({
         container: waveformRef.current,
-        barWidth: 2,
+        barWidth: 2.5,
         waveColor: "#656666",
-        progressColor: "#EE772F",
+        progressColor: "#a70000",
         url: audioSrc,
         interact: true,
         cursorWidth: 0,
@@ -58,19 +56,56 @@ export default function AudioWaveform({ audioSrc }) {
     }
   };
 
+  // Inline styles for the waveform and elements
+  const waveformStyle = {
+    position: "relative",
+    cursor: "pointer",
+  };
+
+  const hoverStyle = {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    zIndex: 10,
+    pointerEvents: "none",
+    height: "100%",
+    width: hoverWidth,
+    mixBlendMode: "overlay",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    opacity: 0.5,
+    transition: "opacity 0.2s ease",
+  };
+
+  const timeStyle = {
+    position: "absolute",
+    zIndex: 11,
+    top: "50%",
+    transform: "translateY(-50%)",
+    fontSize: "11px",
+    background: "rgba(0, 0, 0, 0.75)",
+    padding: "2px",
+    color: "#ddd",
+  };
+
+  const durationStyle = {
+    ...timeStyle,
+    right: 0,
+  };
+
   return (
     <div
       id="waveform"
       ref={waveformRef}
       onMouseMove={handleMouseMove}
-      style={{ position: "relative", cursor: "pointer" }}
+      style={waveformStyle}
     >
-      <canvas id="wave"></canvas>
-      <div id="hover" style={{ width: hoverWidth, opacity: 0.5 }}></div>
-      <div id="time" style={{ left: 0, position: "absolute" }}>
+      <div id="hover" style={hoverStyle}>
+        <canvas id="wave"></canvas>
+      </div>
+      <div id="time" style={{ ...timeStyle, left: 0 }}>
         {currentTime}
       </div>
-      <div id="duration" style={{ right: 0, position: "absolute" }}>
+      <div id="duration" style={durationStyle}>
         {duration}
       </div>
     </div>

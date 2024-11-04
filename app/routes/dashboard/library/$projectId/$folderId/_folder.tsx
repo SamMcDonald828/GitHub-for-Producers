@@ -113,11 +113,11 @@ export default function FolderDetailsPage() {
           </button>
         </div>
       </Form>
-      <ol className="flex flex-wrap w-1/2 flex-col">
+      <ol className="flex w-1/2 flex-col">
         <h3>Files</h3>
         {data.files.map((file) => (
           <li key={file.id}>
-            <div className="block text-slate-500 hover:text-slate-700">
+            <div className="text-slate-500 hover:text-slate-700">
               <p>{file.title}</p>
               <AudioWaveform audioSrc={file.remoteUrl} />
             </div>
