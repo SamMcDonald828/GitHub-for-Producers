@@ -93,5 +93,10 @@ export default function WaveformVisual({ audioSrc }) {
     ctx.stroke();
   };
 
-  return <canvas ref={canvasRef} style={{ width: "100%", height: "100px" }} />;
+  return (
+    <div>
+      <canvas ref={canvasRef} style={{ width: "200px", height: "50px" }} />
+      <audio src={audioSrc} controls></audio>
+    </div>
+  );
 }

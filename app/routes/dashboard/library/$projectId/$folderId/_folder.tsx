@@ -118,13 +118,10 @@ export default function FolderDetailsPage() {
         <h3>Files</h3>
         {data.files.map((file) => (
           <li key={file.id}>
-            <NavLink
-              className="block text-slate-500 hover:text-slate-700"
-              to={file.remoteUrl}
-            >
+            <div className="block text-slate-500 hover:text-slate-700">
               <p>{file.title}</p>
               <WaveformVisual audioSrc={file.remoteUrl} />
-            </NavLink>
+            </div>
             {/* future  <Link
               to={`https://spring-tree-3095.fly.storage.tigris.dev/${data.folder.id}/${file.id}`}
             >
@@ -133,21 +130,6 @@ export default function FolderDetailsPage() {
           </li>
         ))}
       </ol>
-      <audio controls>
-        <source src={data.files[0].remoteUrl} type="audio/*" />
-        <source src={data.files[0].remoteUrl} type="audio/wav" />
-        <p>
-          Download{" "}
-          <a href={data.files[0].remoteUrl} download="myAudio.mp3">
-            MP3
-          </a>{" "}
-          or
-          <a href={data.files[0].remoteUrl} download="myAudio.wav">
-            OGG
-          </a>{" "}
-          audio.
-        </p>
-      </audio>
       {/* <AudioFile fileId={fileId}/> */}
       {/* Create a file component that shows the waveform and takes in a selected fileId, fileTitle, remoteURL */}
     </div>
