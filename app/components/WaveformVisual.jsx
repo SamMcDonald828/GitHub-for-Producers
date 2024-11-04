@@ -117,7 +117,7 @@ export default function WaveformVisual({ audioSrc }) {
     <div>
       <canvas
         ref={canvasRef}
-        style={{ width: "275px", height: "100px" }}
+        style={{ width: "240px", height: "40px" }}
       ></canvas>
       <audio
         ref={audioRef}
