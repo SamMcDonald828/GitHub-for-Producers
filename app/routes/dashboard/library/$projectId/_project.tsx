@@ -87,7 +87,10 @@ export default function ProjectDetailsPage() {
 
   return (
     <div className="w-full">
-      <Form method="post" className="bg-slate-100 w-full p-2">
+      <Form
+        method="post"
+        className="bg-dark2 border-b-slate-300 border-b-2 w-full p-2"
+      >
         <div className="flex justify-between mx-2">
           <input
             type="text"
@@ -121,22 +124,22 @@ export default function ProjectDetailsPage() {
           </div>
         </div>
       </Form>
-      <div className="bg-slate-200 flex flex-col max-w-[1000px]">
+      <div className="bg-dark2 flex h-full flex-col px-4">
         <div className="flex inline justify-between">
           <h2 className="text-xl text-slate-500">Folders(branches)</h2>
           <Link to="newFolder" className="flex block text-m text-black">
-            <button className="shadow-xl border p-1 bg-white border-black hover:bg-slate-200">
+            <button className="shadow-xl border p-1 bg-slate-300 hover:bg-slate-200">
               + New Folder
             </button>
           </Link>
         </div>
-        <div className="flex flex-col">
-          <ol className="text-slate-500 text-sm h-22 overflow-scroll rounded bg-slate-200">
+        <div className="flex flex-col bg-dark2 rounded ">
+          <ol className="text-slate-500 text-sm h-22 overflow-scroll rounded">
             {data.folderList.map((folder) => (
               <li key={folder.id}>
                 <NavLink
                   className={({ isActive }) =>
-                    `block p-1 ${isActive ? "bg-slate-700 text-white rounded" : ""}`
+                    `block p-1 ${isActive ? "bg-light1 text-white rounded" : ""}`
                   }
                   to={`${folder.id}`}
                 >
@@ -150,7 +153,6 @@ export default function ProjectDetailsPage() {
               </li>
             ))}
           </ol>
-          <div className="divider h-[2px] rounded bg-black w-full"></div>
           <Outlet />
         </div>
       </div>

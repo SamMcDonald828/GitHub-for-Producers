@@ -2,9 +2,9 @@ import { Form, NavLink } from "@remix-run/react";
 
 export function HeaderGlobal() {
   return (
-    <header className="flex justify-between p-4 text-white bg-black">
-      <div className="flex justify-center gap-4 mx-auto">
-        <h1 className="text-2xl font-bold active:underline">
+    <header className="flex justify-between p-2 text-white bg-dark1 border-b">
+      <div className="flex justify-center gap-4 font-light mx-auto">
+        <h1 className="text-l active:underline">
           <NavLink
             to="home"
             className={({ isActive }) =>
@@ -14,7 +14,7 @@ export function HeaderGlobal() {
             Home
           </NavLink>
         </h1>
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-l">
           <NavLink
             to="library"
             className={({ isActive }) =>
@@ -24,7 +24,7 @@ export function HeaderGlobal() {
             Library
           </NavLink>
         </h1>
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-l">
           <NavLink
             to="community"
             className={({ isActive }) =>
@@ -39,7 +39,7 @@ export function HeaderGlobal() {
       <Form action="/logout" method="post">
         <button
           type="submit"
-          className="px-4 py-2 text-blue-100 rounded bg-slate-600 hover:bg-white hover:text-black active:bg-slate-400"
+          className="px-2 font-light text-blue-100 rounded bg-slate-600 hover:bg-white hover:text-black active:bg-slate-400"
         >
           Logout
         </button>
