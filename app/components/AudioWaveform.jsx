@@ -4,6 +4,11 @@ import WaveSurfer from "wavesurfer.js";
 export default function AudioWaveform({ audioSrc }) {
   const waveformRef = useRef(null);
   const waveSurferRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState("play");
+  // const togglePlayPause = () => {
+  //   setIsPlaying((prevState) => (prevState === "play" ? "pause" : "play"));
+  //   waveSurferRef.current.playPause();
+  // };
   const [currentTime, setCurrentTime] = useState("0:00");
   const [duration, setDuration] = useState("0:00");
   const [hoverWidth, setHoverWidth] = useState(0);
@@ -24,6 +29,7 @@ export default function AudioWaveform({ audioSrc }) {
         progressColor: "#a70000",
         url: audioSrc,
         interact: true,
+        preload: true,
         cursorWidth: 0,
       });
 
@@ -93,21 +99,26 @@ export default function AudioWaveform({ audioSrc }) {
   };
 
   return (
-    <div
-      id="waveform"
-      ref={waveformRef}
-      onMouseMove={handleMouseMove}
-      style={waveformStyle}
-    >
-      <div id="hover" style={hoverStyle}>
-        <canvas id="wave"></canvas>
+    <>
+      <div
+        id="waveform"
+        ref={waveformRef}
+        onMouseMove={handleMouseMove}
+        style={waveformStyle}
+      >
+        <div id="hover" style={hoverStyle}>
+          <canvas id="wave"></canvas>
+        </div>
+        <div id="time" style={{ ...timeStyle, left: 0 }}>
+          {currentTime}
+        </div>
+        <div id="duration" style={durationStyle}>
+          {duration}
+        </div>
       </div>
-      <div id="time" style={{ ...timeStyle, left: 0 }}>
-        {currentTime}
-      </div>
-      <div id="duration" style={durationStyle}>
-        {duration}
-      </div>
-    </div>
+      {/* <button className="z-12" onClick={togglePlayPause}>
+        {isPlaying}
+      </button> */}
+    </>
   );
 }

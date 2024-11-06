@@ -119,8 +119,8 @@ export default function FolderDetailsPage() {
           <li key={file.id}>
             <div className="text-slate-500 hover:text-slate-700">
               <p>{file.title}</p>
-              <AudioWaveform audioSrc={file.remoteUrl} />
             </div>
+            <AudioWaveform audioSrc={file.remoteUrl} />
             {/* future  <Link
               to={`https://spring-tree-3095.fly.storage.tigris.dev/${data.folder.id}/${file.id}`}
             >
