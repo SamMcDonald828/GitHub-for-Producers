@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
-import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+
 import { Button } from "~/components/components/ui/button";
 import { getProjectListItems } from "~/models/project.server";
 import { requireUserId } from "~/session.server";
@@ -21,33 +22,26 @@ export default function LibraryPage() {
   return (
     <>
       <main className="flex h-full bg-dark1">
-        <div className="flex flex-col inline">
+        <div className="flex flex-col bg-dark2 border-r border-secondary2 h-full">
           <button
             onClick={openProjectsList}
-            className="p-1 text-dark1 rounded bg-secondary1 hover:bg-secondary2 focus:primary1"
+            className="p-1 text-dark1 rounded bg-secondary2 hover:bg-secondary1 focus:primary1"
             id="svg"
           >
             SVG
           </button>
-          <div
-            id="projectList"
-            className="overflow-scroll flex flex-col z-10 bg-medium1 border-r-2 border-sate-300 h-full"
-          >
-            <Link to="new" className="text-sm text-secondary1 mx-2">
-              <Button
-                variant="outline"
-                type="submit"
-                className="shadow-lg size-xs"
-              >
-                + New Project
-              </Button>
-            </Link>
-            <ol className="h-full flex-col text-secondary1 flex mx-2">
+          <div id="projectList" className="mx-2 flex">
+            <ol className="space-y-1 h-full flex-col text-secondary1 overflow-scroll">
+              <Link to="new" className="text-sm text-secondary1">
+                <Button variant="outline" type="submit" className="shadow-lg">
+                  + New Project
+                </Button>
+              </Link>
               {data.projectListItems.map((project) => (
                 <li key={project.id}>
                   <NavLink
                     className={({ isActive }) =>
-                      `p-1 flex ${isActive ? "bg-secondary1 text-dark1 rounded" : ""}`
+                      `p-1 flex ${isActive ? "bg-secondary2 shadow-l text-dark1 rounded" : ""}`
                     }
                     to={project.id}
                   >

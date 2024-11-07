@@ -87,16 +87,13 @@ export default function ProjectDetailsPage() {
 
   return (
     <div className="w-full">
-      <Form
-        method="post"
-        className="bg-dark2 border-b-slate-300 border-b-2 w-full p-2"
-      >
-        <div className="flex justify-between mx-2">
+      <Form method="post" className="rounded shadow-xl w-full bg-dark2 p-2">
+        <div className="flex justify-between">
           <input
             type="text"
             name="title"
             defaultValue={data.project.title || ""}
-            className="border rounded p-1"
+            className="border rounded"
           />
           {/* <input
             type="text"
@@ -104,12 +101,12 @@ export default function ProjectDetailsPage() {
             defaultValue={data.project.body || ""}
             className="border rounded w-full p-2"
           /> */}
-          <div className="flex inline gap-2">
+          <div className="flex text-sm gap-2">
             <button
               type="submit"
               name="_action"
               value="update"
-              className="flex p-1 text-white rounded bg-slate-700 hover:bg-blue-400 focus:bg-blue-400"
+              className="flex p-1 m-auto text-light2 rounded border border-light2 hover:bg-light2 hover:text-white focus:bg-light1"
             >
               update
             </button>
@@ -117,24 +114,24 @@ export default function ProjectDetailsPage() {
               type="submit"
               name="_action"
               value="delete"
-              className="flex p-1 text-white rounded bg-red-700 hover:bg-red-400 focus:bg-red-400"
+              className="flex p-1 m-auto text-primary2 rounded border border-primary2 hover:bg-primary2 hover:text-white focus:bg-red-400"
             >
               delete
             </button>
           </div>
         </div>
       </Form>
-      <div className="bg-dark2 flex h-full flex-col px-4">
-        <div className="flex inline justify-between">
-          <h2 className="text-xl text-slate-500">Folders(branches)</h2>
-          <Link to="newFolder" className="flex block text-m text-black">
-            <button className="shadow-xl border p-1 bg-slate-300 hover:bg-slate-200">
+      <div className="bg-dark1 flex h-full flex-col px-4">
+        <div className="flex justify-between m-2">
+          <h2 className="text-lg text-light2">Folders(branches)</h2>
+          <Link to="newFolder" className="flex text-m text-black">
+            <button className="shadow-xl p-1 border text-sm border-primary2 text-primary2 hover:bg-primary2 hover:text-white">
               + New Folder
             </button>
           </Link>
         </div>
         <div className="flex flex-col bg-dark2 rounded ">
-          <ol className="text-slate-500 text-sm h-22 overflow-scroll rounded">
+          <ol className="text text-sm h-22 overflow-scroll rounded">
             {data.folderList.map((folder) => (
               <li key={folder.id}>
                 <NavLink
