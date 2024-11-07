@@ -22,13 +22,13 @@ export default function LibraryPage() {
   return (
     <>
       <main className="flex h-full bg-dark1">
-        <div className="flex flex-col bg-dark2 border-r border-secondary2 h-full">
+        <div className="z-20 shadow-2xl flex absolute flex-col bg-dark2 border-r border-secondary2 h-full">
           <button
             onClick={openProjectsList}
             className="p-1 text-dark1 rounded bg-secondary2 hover:bg-secondary1 focus:primary1"
             id="svg"
           >
-            SVG
+            III
           </button>
           <div id="projectList" className="mx-2 flex">
             <ol className="space-y-1 h-full flex-col text-secondary1 overflow-scroll">

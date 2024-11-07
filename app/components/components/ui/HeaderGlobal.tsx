@@ -8,9 +8,7 @@ export function HeaderGlobal() {
           <NavLink
             to="home"
             className={({ isActive }) =>
-              isActive
-                ? "underline underline-dark1 bg-accent2 text-dark1 p-1 shadow-inner shadow-secondary2 rounded"
-                : "opacity-60"
+              isActive ? "underline text-light2 rounded" : "opacity-60"
             }
           >
             Home
@@ -20,9 +18,7 @@ export function HeaderGlobal() {
           <NavLink
             to="library"
             className={({ isActive }) =>
-              isActive
-                ? "underline underline-dark1 bg-accent2 text-dark1 p-1 shadow-inner shadow-secondary2 rounded"
-                : "opacity-60"
+              isActive ? "underline text-light2 rounded" : "opacity-60"
             }
           >
             Library
@@ -32,9 +28,7 @@ export function HeaderGlobal() {
           <NavLink
             to="community"
             className={({ isActive }) =>
-              isActive
-                ? "underline underline-dark1 bg-accent2 text-dark1 p-1 shadow-inner shadow-secondary2 rounded"
-                : "opacity-60"
+              isActive ? "underline text-light2 rounded" : "opacity-60"
             }
           >
             Community
@@ -45,7 +39,7 @@ export function HeaderGlobal() {
       <Form action="/logout" method="post">
         <button
           type="submit"
-          className="text-dark1 text-sm hover:bg-secondary2 bg-accent2 rounded p-[3px] font-semibold"
+          className="text-dark1 text-sm hover:bg-secondary2 bg-accent1 rounded p-[3px] font-semibold"
         >
           Logout
         </button>

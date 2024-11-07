@@ -125,18 +125,18 @@ export default function ProjectDetailsPage() {
         <div className="flex justify-between m-2">
           <h2 className="text-lg text-light2">Folders(branches)</h2>
           <Link to="newFolder" className="flex text-m text-black">
-            <button className="shadow-xl p-1 border text-sm border-primary2 text-primary2 hover:bg-primary2 hover:text-white">
+            <button className="shadow-xl rounded p-1 border text-sm border-primary2 text-primary2 hover:bg-primary2 hover:text-white">
               + New Folder
             </button>
           </Link>
         </div>
-        <div className="flex flex-col bg-dark2 rounded ">
+        <div className="flex flex-col bg-medium1 rounded ">
           <ol className="text text-sm h-22 overflow-scroll rounded">
             {data.folderList.map((folder) => (
               <li key={folder.id}>
                 <NavLink
                   className={({ isActive }) =>
-                    `block p-1 ${isActive ? "bg-light1 text-white rounded" : ""}`
+                    `block p-1 ${isActive ? "bg-light2 text-white rounded" : ""}`
                   }
                   to={`${folder.id}`}
                 >

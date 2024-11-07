@@ -100,8 +100,8 @@ export default function FolderDetailsPage() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex w-full bg-medium2 rounded shadow-xl text-white object-fit">
-      <Form method="post" encType="multipart/form-data" className="w-1/2 m-2">
+    <div className="flex flex-col w-full bg-medium2 rounded shadow-xl text-white object-fit">
+      <Form method="post" encType="multipart/form-data" className="m-2">
         <div className="flex flex-col space-y-2">
           <h3 className="text-l my-auto font-semibold">{data.folder.title}</h3>
           <input name="file" type="file" accept="audio/*" required />
@@ -113,7 +113,7 @@ export default function FolderDetailsPage() {
           </button>
         </div>
       </Form>
-      <ol className="flex w-1/2 flex-col">
+      <ol className="w-full">
         <h3>Files</h3>
         {data.files.map((file) => (
           <li key={file.id}>
