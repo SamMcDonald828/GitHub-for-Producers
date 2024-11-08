@@ -7,9 +7,9 @@ export function HeaderGlobal({ drawerData }) {
   const location = useLocation();
 
   function openDrawer() {
-    const projectListElement = document.getElementById("drawerContent");
-    if (projectListElement) {
-      projectListElement.classList.toggle("hidden");
+    const drawer = document.getElementById("drawerContent");
+    if (drawer) {
+      drawer.classList.toggle("hidden");
     }
   }
 
@@ -48,7 +48,7 @@ export function HeaderGlobal({ drawerData }) {
               Home
             </NavLink>
           </h3>
-          <h3 className=" font-semibold">
+          <h3 className="font-semibold">
             <NavLink
               to="library"
               className={({ isActive }) =>
