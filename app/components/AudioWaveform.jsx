@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 
+// eslint-disable-next-line react/prop-types
 export default function AudioWaveform({ audioSrc }) {
   const waveformRef = useRef(null);
   const waveSurferRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState("play");
   // const togglePlayPause = () => {
   //   setIsPlaying((prevState) => (prevState === "play" ? "pause" : "play"));
   //   waveSurferRef.current.playPause();
