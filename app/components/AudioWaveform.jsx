@@ -26,7 +26,7 @@ export default function AudioWaveform({ audioSrc }) {
         container: waveformRef.current,
         barWidth: 2.5,
         waveColor: "#656666",
-        progressColor: "#a70000",
+        progressColor: "#b04c47",
         url: audioSrc,
         interact: true,
         preload: true,

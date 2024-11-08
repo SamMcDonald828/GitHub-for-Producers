@@ -1,6 +1,7 @@
 import { Form, Link, NavLink, useLocation } from "@remix-run/react";
 
 import { Button } from "./button";
+import DrawerIcon from "~/Icons/DrawerIcon";
 
 // eslint-disable-next-line react/prop-types
 export function HeaderGlobal({ drawerData }) {
@@ -29,13 +30,13 @@ export function HeaderGlobal({ drawerData }) {
 
   return (
     <>
-      <header className="flex justify-between p-2 text-white bg-dark1 border-b border-b-secondary2">
+      <header className="flex justify-between p-2 text-light2 bg-dark1 border-b border-b-secondary2">
         <button
           onClick={openDrawer}
-          className="p-1 text-dark1 rounded bg-secondary2 hover:bg-secondary1 focus:primary1"
+          className=" rounded text-primary1 hover:text-secondary1"
           id="svg"
         >
-          III
+          <DrawerIcon />
         </button>
         <div className="flex justify-center gap-4 font-normal mx-auto">
           <h3 className="font-semibold">
