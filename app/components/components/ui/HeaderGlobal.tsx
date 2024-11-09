@@ -91,7 +91,7 @@ export function HeaderGlobal({ drawerData }) {
         </Form>
       </header>
       <div id="drawerContent" className="flex">
-        <div className=" z-20 shadow-2xl flex absolute flex-col bg-dark2 border-r border-secondary2 h-full">
+        <div className="z-20 shadow-2xl shadow-black flex absolute flex-col bg-dark2 border-r border-secondary2 h-full">
           {getDrawerContent()}
         </div>
       </div>
