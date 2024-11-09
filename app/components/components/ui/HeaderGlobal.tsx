@@ -3,6 +3,9 @@ import { Form, Link, NavLink, useLocation } from "@remix-run/react";
 import { Button } from "./button";
 import DrawerIcon from "~/Icons/DrawerIcon";
 import HomeIcon from "~/Icons/HomeIcon";
+import FolderIcon from "~/Icons/FolderIcon";
+import CommunityIcon from "~/Icons/CommunityIcon";
+import LibraryIcon from "~/Icons/LibraryIcon";
 
 // eslint-disable-next-line react/prop-types
 export function HeaderGlobal({ drawerData }) {
@@ -44,9 +47,7 @@ export function HeaderGlobal({ drawerData }) {
             <NavLink
               to="home"
               className={({ isActive }) =>
-                isActive
-                  ? "underline underline-offset-auto text-primary1 rounded"
-                  : "opacity-60 hover:text-primary2"
+                isActive ? " text-primary1" : "opacity-60 hover:text-primary2"
               }
             >
               <HomeIcon />
@@ -56,22 +57,20 @@ export function HeaderGlobal({ drawerData }) {
             <NavLink
               to="library"
               className={({ isActive }) =>
-                isActive
-                  ? "underline text-light2 underline-offset-2 rounded"
-                  : "opacity-60"
+                isActive ? " text-primary1" : "opacity-60 hover:text-primary2"
               }
             >
-              Library
+              <LibraryIcon />
             </NavLink>
           </h3>
           <h3 className="font-semibold">
             <NavLink
               to="community"
               className={({ isActive }) =>
-                isActive ? "underline text-light2 rounded" : "opacity-60"
+                isActive ? " text-primary1" : "opacity-60 hover:text-primary2"
               }
             >
-              Community
+              <CommunityIcon />
             </NavLink>
           </h3>
         </div>
