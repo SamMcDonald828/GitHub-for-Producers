@@ -2,44 +2,44 @@ import { Form, NavLink } from "@remix-run/react";
 
 export function HeaderGlobal() {
   return (
-    <header className="flex justify-between p-4 text-white bg-black">
-      <div className="flex justify-center gap-4 mx-auto">
-        <h1 className="text-2xl font-bold active:underline">
+    <header className="flex justify-between p-2 text-white bg-dark1 border-b border-b-secondary2">
+      <div className="flex justify-center gap-4 font-normal mx-auto">
+        <h3 className="font-semibold">
           <NavLink
             to="home"
             className={({ isActive }) =>
-              isActive ? "underline" : "opacity-60"
+              isActive ? "underline text-light2 rounded" : "opacity-60"
             }
           >
             Home
           </NavLink>
-        </h1>
-        <h1 className="text-2xl font-bold">
+        </h3>
+        <h3 className=" font-semibold">
           <NavLink
             to="library"
             className={({ isActive }) =>
-              isActive ? "underline" : "opacity-60"
+              isActive ? "underline text-light2 rounded" : "opacity-60"
             }
           >
             Library
           </NavLink>
-        </h1>
-        <h1 className="text-2xl font-bold">
+        </h3>
+        <h3 className="font-semibold">
           <NavLink
             to="community"
             className={({ isActive }) =>
-              isActive ? "underline" : "opacity-60"
+              isActive ? "underline text-light2 rounded" : "opacity-60"
             }
           >
             Community
           </NavLink>
-        </h1>
+        </h3>
       </div>
       {/*<p>{user.email}</p>*/}
       <Form action="/logout" method="post">
         <button
           type="submit"
-          className="px-4 py-2 text-blue-100 rounded bg-slate-600 hover:bg-white hover:text-black active:bg-slate-400"
+          className="text-dark1 text-sm hover:bg-secondary2 bg-accent1 rounded p-[3px] font-semibold"
         >
           Logout
         </button>

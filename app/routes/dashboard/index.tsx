@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
-import { Link, Outlet } from "@remix-run/react";
+import { Outlet } from "@remix-run/react";
+
 import { HeaderGlobal } from "~/components/components/ui/HeaderGlobal";
 import { requireUserId } from "~/session.server";
 

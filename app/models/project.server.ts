@@ -19,7 +19,7 @@ export function getProject({
 export function getProjectListItems({ userId }: { userId: User["id"] }) {
   return prisma.project.findMany({
     where: { userId },
-    select: { id: true, title: true, body: true},
+    select: { id: true, title: true, body: true },
     orderBy: { updatedAt: "desc" },
   });
 }
@@ -35,12 +35,29 @@ export function createProject({
     data: {
       title,
       body,
+      folder: {
+        create: {
+          title: "main",
+        },
+      },
       user: {
         connect: {
           id: userId,
         },
       },
     },
+  });
+}
+
+export function updateProject({
+  id,
+  userId,
+  body,
+  title,
+}: Pick<Project, "id" | "body" | "title"> & { userId: User["id"] }) {
+  return prisma.project.update({
+    where: { id, userId },
+    data: { title, body },
   });
 }
 
