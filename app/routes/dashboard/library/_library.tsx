@@ -12,7 +12,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function LibraryPage() {
   return (
     <>
-      <main className="flex h-full bg-dark1">
+      <main className="w-full h-full bg-dark1">
         <Outlet />
       </main>
     </>

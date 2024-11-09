@@ -11,6 +11,7 @@ import {
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { Button } from "~/components/components/ui/button";
+import FolderIcon from "~/Icons/FolderIcon";
 import {
   deleteBucket,
   deleteFolder,
@@ -87,8 +88,8 @@ export default function ProjectDetailsPage() {
 
   return (
     <div className="w-full">
-      <Form method="post" className="shadow-xl w-full bg-dark2 p-2">
-        <div className="flex justify-center mx-auto w-full ">
+      <Form method="post" className="flex shadow-xl w-full bg-dark2 p-2">
+        <div className="flex justify-center w-full">
           <input
             type="text"
             name="title"
@@ -136,15 +137,12 @@ export default function ProjectDetailsPage() {
               <li key={folder.id}>
                 <NavLink
                   className={({ isActive }) =>
-                    `block p-1 ${isActive ? "bg-medium2 text-white rounded" : ""}`
+                    `flex p-1 ${isActive ? "bg-medium2 text-accent1" : ""}`
                   }
                   to={`${folder.id}`}
                 >
-                  {folder.title}{" "}
-                  <button name="_action" value="deleteFolder">
-                    {" "}
-                    delete{" "}
-                  </button>
+                  <FolderIcon />
+                  <div className="ml-2 my-auto">{folder.title}</div>
                 </NavLink>
                 {/* delete folder function */}
               </li>
