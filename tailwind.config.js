@@ -17,6 +17,12 @@ module.exports = {
       },
     },
     extend: {
+      dropShadow: {
+        glow: [
+          "0 0px 2px #b04c4766", // Smaller, brighter inner glow
+          "0 0px 4px #b04c4733",
+        ],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

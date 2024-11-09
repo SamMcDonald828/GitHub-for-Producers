@@ -16,7 +16,9 @@ export default function DashboardIndexPage() {
   return (
     <>
       <HeaderGlobal drawerData={data} />
-      <Outlet />
+      <div className="flex h-full bg-dark1">
+        <Outlet />
+      </div>
     </>
   );
 }

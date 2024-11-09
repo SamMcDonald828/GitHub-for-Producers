@@ -1,11 +1,11 @@
 import { Form, Link, NavLink, useLocation } from "@remix-run/react";
 
-import { Button } from "./button";
+import CommunityIcon from "~/Icons/CommunityIcon";
 import DrawerIcon from "~/Icons/DrawerIcon";
 import HomeIcon from "~/Icons/HomeIcon";
-import FolderIcon from "~/Icons/FolderIcon";
-import CommunityIcon from "~/Icons/CommunityIcon";
 import LibraryIcon from "~/Icons/LibraryIcon";
+
+import { Button } from "./button";
 
 // eslint-disable-next-line react/prop-types
 export function HeaderGlobal({ drawerData }) {
@@ -47,7 +47,9 @@ export function HeaderGlobal({ drawerData }) {
             <NavLink
               to="home"
               className={({ isActive }) =>
-                isActive ? " text-primary1" : "opacity-60 hover:text-primary2"
+                isActive
+                  ? " text-primary1 stroke-primary2 drop-shadow-glow"
+                  : "opacity-60 hover:text-primary2"
               }
             >
               <HomeIcon />
@@ -57,7 +59,9 @@ export function HeaderGlobal({ drawerData }) {
             <NavLink
               to="library"
               className={({ isActive }) =>
-                isActive ? " text-primary1" : "opacity-60 hover:text-primary2"
+                isActive
+                  ? "text-primary1 stroke-primary2 drop-shadow-glow"
+                  : "opacity-60 hover:text-primary2"
               }
             >
               <LibraryIcon />
@@ -67,7 +71,9 @@ export function HeaderGlobal({ drawerData }) {
             <NavLink
               to="community"
               className={({ isActive }) =>
-                isActive ? " text-primary1" : "opacity-60 hover:text-primary2"
+                isActive
+                  ? " text-primary1 stroke-primary2 drop-shadow-glow"
+                  : "opacity-60 hover:text-primary2"
               }
             >
               <CommunityIcon />
