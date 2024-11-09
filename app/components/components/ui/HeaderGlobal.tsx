@@ -2,6 +2,7 @@ import { Form, Link, NavLink, useLocation } from "@remix-run/react";
 
 import { Button } from "./button";
 import DrawerIcon from "~/Icons/DrawerIcon";
+import HomeIcon from "~/Icons/HomeIcon";
 
 // eslint-disable-next-line react/prop-types
 export function HeaderGlobal({ drawerData }) {
@@ -30,7 +31,7 @@ export function HeaderGlobal({ drawerData }) {
 
   return (
     <>
-      <header className="flex justify-between p-2 text-light2 bg-dark1 border-b border-b-secondary2">
+      <header className="flex justify-between p-2 text-primary1 bg-dark1 border-b border-b-secondary2">
         <button
           onClick={openDrawer}
           className=" rounded text-primary1 hover:text-secondary1"
@@ -43,17 +44,21 @@ export function HeaderGlobal({ drawerData }) {
             <NavLink
               to="home"
               className={({ isActive }) =>
-                isActive ? "underline text-light2 rounded" : "opacity-60"
+                isActive
+                  ? "underline underline-offset-auto text-primary1 rounded"
+                  : "opacity-60 hover:text-primary2"
               }
             >
-              Home
+              <HomeIcon />
             </NavLink>
           </h3>
           <h3 className="font-semibold">
             <NavLink
               to="library"
               className={({ isActive }) =>
-                isActive ? "underline text-light2 rounded" : "opacity-60"
+                isActive
+                  ? "underline text-light2 underline-offset-2 rounded"
+                  : "opacity-60"
               }
             >
               Library
