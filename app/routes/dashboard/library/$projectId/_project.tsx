@@ -10,7 +10,7 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { Button } from "~/components/components/ui/button";
+
 import FolderIcon from "~/Icons/FolderIcon";
 import {
   deleteBucket,
@@ -59,6 +59,11 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     return redirect(`/dashboard/library/${params.projectId}`);
   } else if (_action === "delete") {
     await deleteProject({ id: params.projectId, userId });
+    // delete all associated folders and files and buckets associated with this project
+    //delete all folders
+    //delete all files
+    //delete all buckets
+    return redirect("/dashboard/library");
   } else if (_action === "deleteFolder") {
     // Fetch the folder before attempting to delete the bucket
     const folder = await getFolder({
@@ -115,7 +120,7 @@ export default function ProjectDetailsPage() {
               type="submit"
               name="_action"
               value="delete"
-              className=" p-1 m-auto text-primary2 rounded border border-primary2 hover:bg-primary2 hover:text-white focus:bg-red-400"
+              className="p-1 m-auto text-primary2 rounded border border-primary2 hover:bg-primary2 hover:text-white focus:bg-red-400"
             >
               delete
             </button>

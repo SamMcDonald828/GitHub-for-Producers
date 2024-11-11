@@ -8,14 +8,7 @@ import {
   redirect,
   unstable_parseMultipartFormData,
 } from "@remix-run/node";
-import {
-  Form,
-  Link,
-  NavLink,
-  useLoaderData,
-  useRouteError,
-  Outlet,
-} from "@remix-run/react";
+import { Form, Link, NavLink, useLoaderData, Outlet } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import AudioWaveform from "~/components/AudioWaveform";
@@ -26,7 +19,12 @@ import {
   getFileList,
   updatedFile,
 } from "~/models/file.server";
-import { getFolder, deleteFolder, listBucket } from "~/models/folder.server";
+import {
+  getFolder,
+  deleteFolder,
+  listBucket,
+  deleteBucket,
+} from "~/models/folder.server";
 import { requireUserId } from "~/session.server";
 import { s3UploadHandler, uploadStreamToS3 } from "~/utils/s3.server";
 
@@ -58,44 +56,61 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
   await requireUserId(request);
+  const formData = await request.formData();
+  const { _action } = Object.fromEntries(formData);
+
   const folder = await getFolder({
     id: params.folderId as string,
     projectId: params.projectId as string,
   });
+  if (_action === "deleteFolder") {
+    // Ensure `folder` exists before calling `deleteBucket`
+    if (folder) {
+      await deleteBucket(folder.id);
+      await deleteFolder({
+        id: params.folderId as string,
+        projectId: params.projectId as string,
+      });
+    } else {
+      throw new Response("Folder Not Found", { status: 404 });
+    }
+    return redirect(`/dashboard/library/${params.projectId}`);
+    // upload action goes here
+  } else if (_action === "uploadFile") {
+    const file = await createFile({
+      // automatically generate a unique id for the file
+      folderId: params.folderId || "",
+      title: "", // Add a default value for title
+      remoteUrl: "", // Add a default value for remoteUrl
+    });
 
-  const file = await createFile({
-    // automatically generate a unique id for the file
-    folderId: params.folderId || "",
-    title: "", // Add a default value for title
-    remoteUrl: "", // Add a default value for remoteUrl
-  });
+    let title = "" as string;
+    const s3UploadHandler: UploadHandler = async ({ filename, data }) => {
+      const key = file.id;
+      const bucket = folder!.id;
+      title = filename as string;
+      const fileKey = await uploadStreamToS3(data, filename!, key, bucket);
+      return fileKey;
+    };
 
-  let title = "" as string;
-  const s3UploadHandler: UploadHandler = async ({ filename, data }) => {
-    const key = file.id;
-    const bucket = folder!.id;
-    title = filename as string;
-    const fileKey = await uploadStreamToS3(data, filename!, key, bucket);
-    return fileKey;
-  };
+    const fileData = await unstable_parseMultipartFormData(
+      request,
+      s3UploadHandler,
+    );
 
-  const fileData = await unstable_parseMultipartFormData(
-    request,
-    s3UploadHandler,
-  );
+    // Set file link after upload started
+    const fileUrl = `https://fly.storage.tigris.dev/${folder!.id}/${file.id}`;
+    // Update file name after upload started
+    await updatedFile({
+      id: file.id,
+      folderId: params.folderId as string,
+      title: title as string,
+      remoteUrl: fileUrl as string,
+    });
 
-  // Set file link after upload started
-  const fileUrl = `https://fly.storage.tigris.dev/${folder!.id}/${file.id}`;
-  // Update file name after upload started
-  await updatedFile({
-    id: file.id,
-    folderId: params.folderId as string,
-    title: title as string,
-    remoteUrl: fileUrl as string,
-  });
-
-  invariant(params.folderId, "folderId not found");
-  invariant(params.projectId, "projectId not found");
+    invariant(params.folderId, "folderId not found");
+    invariant(params.projectId, "projectId not found");
+  }
 
   return redirect(`/dashboard/library/${params.projectId}/${params.folderId}`);
 };
@@ -105,12 +120,29 @@ export default function FolderDetailsPage() {
 
   return (
     <div className="flex flex-col w-full bg-dark2 rounded shadow-xl text-white object-fit">
+      <Form method="post" encType="multipart/form-data">
+        <h3 className="text-l my-auto font-semibold">{data.folder.title}</h3>
+        <button
+          type="submit"
+          name="_action"
+          value="deleteFolder"
+          className="p-1 m-auto text-primary1 rounded border border-primary1 hover:bg-primary2 hover:text-white focus:bg-red-400"
+        >
+          delete Folder
+        </button>
+      </Form>
       <Form method="post" encType="multipart/form-data" className="m-2">
         <div className="flex flex-col space-y-2">
-          <h3 className="text-l my-auto font-semibold">{data.folder.title}</h3>
+          {/* create editing state <input
+            type="text"
+            name="title"
+            defaultValue={data.folder.title}
+            className="border rounded p-1" /> */}
           <input name="file" type="file" accept="audio/*" required />
           <button
             type="submit"
+            name="_action"
+            value="uploadFile"
             className="p-1 text-primary2 rounded border bg-dark1 hover:text-white border-primary2 hover:bg-primary2 max-w-28"
           >
             upload file(s)
@@ -131,11 +163,6 @@ export default function FolderDetailsPage() {
               </a>
             </div>
             <AudioWaveform audioSrc={file.remoteUrl} />
-            {/* future  <Link
-              to={`https://spring-tree-3095.fly.storage.tigris.dev/${data.folder.id}/${file.id}`}
-            >
-              <button type="submit">download</button>
-            </Link> */}
           </li>
         ))}
       </ol>
