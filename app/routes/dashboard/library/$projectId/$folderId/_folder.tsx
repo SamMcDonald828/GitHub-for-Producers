@@ -120,7 +120,11 @@ export default function FolderDetailsPage() {
 
   return (
     <div className="flex flex-col w-full bg-dark2 rounded shadow-xl text-white object-fit">
-      <Form method="post" encType="multipart/form-data">
+      <Form
+        method="post"
+        encType="multipart/form-data"
+        className="flex justify-between"
+      >
         <h3 className="text-l my-auto font-semibold">{data.folder.title}</h3>
         <button
           type="submit"
@@ -150,22 +154,28 @@ export default function FolderDetailsPage() {
         </div>
       </Form>
       <ol className="w-full">
-        <h3>Files</h3>
         {data.files.map((file) => (
           <li key={file.id} className="max-w-96">
-            <div className="flex gap-2 text-light2">
-              <p>{file.title}</p>
-              <a
-                href={file.remoteUrl}
-                className="hover:text-primary2 text-primary1"
-              >
-                <DownloadIcon />
-              </a>
-            </div>
-            <AudioWaveform audioSrc={file.remoteUrl} />
+            <NavLink
+              className={({ isActive }) =>
+                `flex p-1 ${isActive ? "bg-medium2 text-accent1" : ""}`
+              }
+              to={`${file.id}`}
+            >
+              <div className="flex gap-2 text-light2">
+                <p>{file.title}</p>
+                <a
+                  href={file.remoteUrl}
+                  className="hover:text-primary2 text-primary1"
+                >
+                  <DownloadIcon />
+                </a>
+              </div>
+            </NavLink>
           </li>
         ))}
       </ol>
+      <Outlet />
       {/* <AudioFile fileId={fileId}/> */}
       {/* Create a file component that shows the waveform and takes in a selected fileId, fileTitle, remoteURL */}
     </div>

@@ -1,4 +1,5 @@
 import type { Folder, File } from "@prisma/client";
+
 import { prisma } from "~/db.server";
 
 export type { Folder } from "@prisma/client";
