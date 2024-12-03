@@ -48,7 +48,6 @@ export async function uploadStreamToS3(
   const stream = uploadStream({ key, bucket });
   await writeAsyncIterableToWritable(data, stream.writeStream);
   const file = await stream.promise;
-  console.log(file);
   return file.Key;
 }
 
