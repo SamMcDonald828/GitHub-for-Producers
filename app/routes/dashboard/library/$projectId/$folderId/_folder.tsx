@@ -56,61 +56,42 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
   await requireUserId(request);
-  const formData = await request.formData();
-  const { _action } = Object.fromEntries(formData);
 
   const folder = await getFolder({
     id: params.folderId as string,
     projectId: params.projectId as string,
   });
-  if (_action === "deleteFolder") {
-    // Ensure `folder` exists before calling `deleteBucket`
-    if (folder) {
-      await deleteBucket(folder.id);
-      await deleteFolder({
-        id: params.folderId as string,
-        projectId: params.projectId as string,
-      });
-    } else {
-      throw new Response("Folder Not Found", { status: 404 });
-    }
-    return redirect(`/dashboard/library/${params.projectId}`);
-    // upload action goes here
-  } else if (_action === "uploadFile") {
-    const file = await createFile({
-      // automatically generate a unique id for the file
-      folderId: params.folderId || "",
-      title: "", // Add a default value for title
-      remoteUrl: "", // Add a default value for remoteUrl
-    });
 
-    let title = "" as string;
-    const s3UploadHandler: UploadHandler = async ({ filename, data }) => {
-      const key = file.id;
-      const bucket = folder!.id;
-      title = filename as string;
-      const fileKey = await uploadStreamToS3(data, filename!, key, bucket);
-      return fileKey;
-    };
+  const file = await createFile({
+    // automatically generate a unique id for the file
+    folderId: params.folderId || "",
+    title: "", // Add a default value for title
+    remoteUrl: "", // Add a default value for remoteUrl
+  });
 
-    const fileData = await unstable_parseMultipartFormData(
-      request,
-      s3UploadHandler,
-    );
+  let title = "" as string;
+  const s3UploadHandler: UploadHandler = async ({ filename, data }) => {
+    const key = file.id;
+    const bucket = folder!.id;
+    title = filename as string;
+    const fileKey = await uploadStreamToS3(data, filename!, key, bucket);
+    return fileKey;
+  };
 
-    // Set file link after upload started
-    const fileUrl = `https://fly.storage.tigris.dev/${folder!.id}/${file.id}`;
-    // Update file name after upload started
-    await updatedFile({
-      id: file.id,
-      folderId: params.folderId as string,
-      title: title as string,
-      remoteUrl: fileUrl as string,
-    });
+  const fileData = await unstable_parseMultipartFormData(request, s3UploadHandler);
 
-    invariant(params.folderId, "folderId not found");
-    invariant(params.projectId, "projectId not found");
-  }
+  // Set file link after upload started
+  const fileUrl = `https://fly.storage.tigris.dev/${folder!.id}/${file.id}`;
+  // Update file name after upload started
+  await updatedFile({
+    id: file.id,
+    folderId: params.folderId as string,
+    title: title as string,
+    remoteUrl: fileUrl as string,
+  });
+
+  invariant(params.folderId, "folderId not found");
+  invariant(params.projectId, "projectId not found");
 
   return redirect(`/dashboard/library/${params.projectId}/${params.folderId}`);
 };
@@ -122,6 +103,7 @@ export default function FolderDetailsPage() {
     <div className="flex flex-col w-full bg-dark2 rounded shadow-xl text-white object-fit">
       <Form
         method="post"
+        // action="/dashboard/library/:projectId/:folderId/delete"
         encType="multipart/form-data"
         className="flex justify-between"
       >
@@ -145,8 +127,6 @@ export default function FolderDetailsPage() {
           <input name="file" type="file" accept="audio/*" required />
           <button
             type="submit"
-            name="_action"
-            value="uploadFile"
             className="p-1 text-primary2 rounded border bg-dark1 hover:text-white border-primary2 hover:bg-primary2 max-w-28"
           >
             upload file(s)
