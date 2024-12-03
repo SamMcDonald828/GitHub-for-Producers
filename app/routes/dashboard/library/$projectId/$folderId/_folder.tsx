@@ -1,3 +1,4 @@
+import { JsonValue } from "@prisma/client/runtime/library";
 import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
@@ -12,6 +13,7 @@ import { Form, Link, NavLink, useLoaderData, Outlet } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import AudioWaveform from "~/components/AudioWaveform";
+import { generatePeaks } from "~/components/GeneratePeaks";
 import DownloadIcon from "~/Icons/DownloadIcon";
 import {
   createFile,
@@ -67,6 +69,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     folderId: params.folderId || "",
     title: "", // Add a default value for title
     remoteUrl: "", // Add a default value for remoteUrl
+    peaks: [], // Add a default value for peaks
   });
 
   let title = "" as string;
@@ -78,16 +81,21 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     return fileKey;
   };
 
-  const fileData = await unstable_parseMultipartFormData(request, s3UploadHandler);
+  const fileData = await unstable_parseMultipartFormData(
+    request,
+    s3UploadHandler,
+  );
 
   // Set file link after upload started
   const fileUrl = `https://fly.storage.tigris.dev/${folder!.id}/${file.id}`;
   // Update file name after upload started
+  const peaks = await generatePeaks(fileUrl);
   await updatedFile({
     id: file.id,
     folderId: params.folderId as string,
     title: title as string,
     remoteUrl: fileUrl as string,
+    peaks: peaks as JsonValue,
   });
 
   invariant(params.folderId, "folderId not found");

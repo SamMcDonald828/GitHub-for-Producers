@@ -80,6 +80,7 @@ model File {
   id String @id @default(cuid())
   title String
   remoteUrl String
+  peaks Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

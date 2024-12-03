@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 
 // eslint-disable-next-line react/prop-types
-export default function AudioWaveform({ audioSrc }) {
+export default function AudioWaveform({ audioSrc, peaks }) {
   const waveformRef = useRef(null);
   const waveSurferRef = useRef(null);
   // const togglePlayPause = () => {
@@ -28,6 +28,7 @@ export default function AudioWaveform({ audioSrc }) {
         waveColor: "#656666",
         progressColor: "#b04c47",
         url: audioSrc,
+        peaks: peaks,
         interact: true,
         preload: true,
         cursorWidth: 0,
@@ -52,7 +53,7 @@ export default function AudioWaveform({ audioSrc }) {
         waveSurferRef.current = null;
       }
     };
-  }, [audioSrc]);
+  }, [audioSrc, peaks]);
 
   const handleMouseMove = (e) => {
     if (waveformRef.current) {

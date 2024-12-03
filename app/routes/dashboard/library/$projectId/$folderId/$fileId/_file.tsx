@@ -54,7 +54,7 @@ export default function File() {
               <DownloadIcon />
             </a>
           </div>
-          <AudioWaveform audioSrc={file.remoteUrl} />
+          <AudioWaveform audioSrc={file.remoteUrl} peaks={file.peaks} />
         </li>
       ))}
     </ol>

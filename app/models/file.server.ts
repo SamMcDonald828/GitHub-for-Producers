@@ -11,7 +11,7 @@ export function getFile({
   folderId: Folder["id"];
 }) {
   return prisma.file.findFirst({
-    select: { id: true, title: true, remoteUrl: true },
+    select: { id: true, title: true, remoteUrl: true, peaks: true },
     where: { id, folderId },
   });
 }
@@ -19,7 +19,7 @@ export function getFile({
 export function getFileList({ folderId }: { folderId: Folder["id"] }) {
   return prisma.file.findMany({
     where: { folderId },
-    select: { id: true, title: true, remoteUrl: true },
+    select: { id: true, title: true, remoteUrl: true, peaks: true },
     orderBy: { updatedAt: "desc" },
   });
 }
@@ -28,11 +28,13 @@ export function createFile({
   title,
   remoteUrl,
   folderId,
-}: Pick<File, "title" | "remoteUrl"> & { folderId: Folder["id"] }) {
+  peaks,
+}: Pick<File, "title" | "remoteUrl" | "peaks"> & { folderId: Folder["id"] }) {
   return prisma.file.create({
     data: {
       title,
       remoteUrl,
+      peaks,
       folder: {
         connect: {
           id: folderId,
@@ -47,12 +49,16 @@ export function updatedFile({
   folderId,
   title,
   remoteUrl,
-}: Pick<File, "id" | "title" | "remoteUrl"> & { folderId: Folder["id"] }) {
+  peaks,
+}: Pick<File, "id" | "title" | "remoteUrl" | "peaks"> & {
+  folderId: Folder["id"];
+}) {
   return prisma.file.update({
     where: { id, folderId },
     data: {
       title,
       remoteUrl,
+      peaks,
     },
   });
 }
