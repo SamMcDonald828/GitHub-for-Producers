@@ -11,9 +11,8 @@ import {
 } from "@remix-run/node";
 import { Form, Link, NavLink, useLoaderData, Outlet } from "@remix-run/react";
 import invariant from "tiny-invariant";
+import WaveSurfer from "wavesurfer.js";
 
-import AudioWaveform from "~/components/AudioWaveform";
-import { generatePeaks } from "~/components/GeneratePeaks";
 import DownloadIcon from "~/Icons/DownloadIcon";
 import {
   createFile,
@@ -88,8 +87,26 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 
   // Set file link after upload started
   const fileUrl = `https://fly.storage.tigris.dev/${folder!.id}/${file.id}`;
-  // Update file name after upload started
+
+  const generatePeaks = async (fileUrl: string): Promise<number[]> => {
+    return new Promise((resolve) => {
+      const waveSurfer = WaveSurfer.create({
+        container: "", // Hidden container
+        backend: "MediaElement",
+      });
+
+      waveSurfer.load(fileUrl);
+
+      waveSurfer.on("ready", () => {
+        const peaks = waveSurfer.backend.getPeaks(512); // Adjust resolution
+        resolve(peaks);
+        waveSurfer.destroy();
+      });
+    });
+  };
+  // Update peaks right there
   const peaks = await generatePeaks(fileUrl);
+
   await updatedFile({
     id: file.id,
     folderId: params.folderId as string,

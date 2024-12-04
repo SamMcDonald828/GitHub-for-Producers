@@ -1,19 +1,35 @@
+import { useEffect, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 
-export async function generatePeaks(fileUrl) {
-  const waveSurfer = WaveSurfer.create({
-    backend: "MediaElement", // Or 'WebAudio' for finer control
-    mediaControls: false,
-    container: "",
-  });
+export default function GeneratePeaks({ file }: { file: any }) {
+  const [peaks, setPeaks] = useState<number[] | null>(null);
 
-  waveSurfer.load(fileUrl);
-
-  return new Promise((resolve) => {
-    waveSurfer.on("ready", () => {
-      const peaks = waveSurfer.backend.getPeaks(512); // Adjust resolution as needed
-      resolve(peaks);
-      waveSurfer.destroy(); // Clean up
+  useEffect(() => {
+    const waveSurfer = WaveSurfer.create({
+      container: "#waveform",
+      backend: "MediaElement",
     });
-  });
+
+    waveSurfer.load(file.remoteUrl);
+
+    waveSurfer.on("ready", () => {
+      const generatedPeaks = waveSurfer.backend.getPeaks(512);
+      setPeaks(generatedPeaks);
+
+      // Optionally send peaks back to the server
+      fetch(`/api/update-file-peaks`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fileId: file.id, peaks: generatedPeaks }),
+      });
+
+      waveSurfer.destroy();
+    });
+  }, [file.id, file.remoteUrl]);
+
+  return (
+    <div>
+      <div id="waveform"></div>
+    </div>
+  );
 }
