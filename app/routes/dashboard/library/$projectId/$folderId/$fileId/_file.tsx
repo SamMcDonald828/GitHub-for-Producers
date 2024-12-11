@@ -5,7 +5,7 @@ import {
   LoaderFunctionArgs,
   redirect,
 } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
 import AudioWaveform from "~/components/AudioWaveform";
@@ -41,22 +41,23 @@ export default function File() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <ol className="w-full">
-      <h3>Files</h3>
-      {data.files.map((file) => (
-        <li key={file.id} className="max-w-96">
-          <div className="flex gap-2 text-light2">
-            <p>{file.title}</p>
-            <a
-              href={file.remoteUrl}
-              className="hover:text-primary2 text-primary1"
-            >
-              <DownloadIcon />
-            </a>
+    <div className="w-full">
+      <div className="flex gap-2">
+        <h3>Selected File</h3>
+        <a
+          href={data.fileId?.remoteUrl}
+          className="hover:text-primary2 text-primary1 size-10"
+        >
+          <div className="my-auto pt-1">
+            <DownloadIcon />
           </div>
-          <AudioWaveform audioSrc={file.remoteUrl} peaks={file.peaks} />
-        </li>
-      ))}
-    </ol>
+        </a>
+      </div>
+      <div className="flex flex-wrap gap-2 text-light2"></div>
+      <AudioWaveform
+        audioSrc={data.fileId?.remoteUrl}
+        peaks={data.fileId?.peaks}
+      />
+    </div>
   );
 }
